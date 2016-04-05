@@ -1,0 +1,136 @@
+{
+  "ChanceCards": [
+    {
+      "money": "",
+      "step": "0",
+      "text": "Lépj a Start mezőre!"
+    },
+    {
+      "money": "",
+      "step": "13",
+      "text": "Lépj a Színház térre!"
+    },
+    {
+      "money": "",
+      "step": "26",
+      "text": "Lépj a Dobó térre!"
+    },
+    {
+      "money": "",
+      "step": "5",
+      "text": "Lépj a Északi vasútra!"
+    },
+    {
+      "money": "",
+      "step": "15",
+      "text": "Lépj a Keleti vasútra!"
+    },
+    {
+      "money": "",
+      "step": "25",
+      "text": "Lépj a Déli vasútra!"
+    },
+    {
+      "money": "",
+      "step": "35",
+      "text": "Lépj a Nyugati vasútra!"
+    },
+    {
+      "money": "",
+      "step": "10",
+      "text": "Lépj a Börtönbe!"
+    },
+    {
+      "money": "",
+      "step": "20",
+      "text": "Pihenj az Ingyenes parkolóba!"
+    },
+    {
+      "money": "",
+      "step": "12",
+      "text": "Lépj az elektromos művekre!"
+    },
+    {
+      "money": "",
+      "step": "28",
+      "text": "Lépj a vízműre!"
+    },
+    {
+      "money": "15000",
+      "step": "",
+      "text": "A bank becsődölt, kapsz 15000 Ft-ot!"
+    },
+    {
+      "money": "30000",
+      "step": "",
+      "text": "Nyertél a lottón! Kapsz 30000 Ft-ot!"
+    },
+    {
+      "money": "",
+      "step": "-3",
+      "text": "Lépj vissza 3 mezőt!"
+    },
+    {
+      "money": "-10000",
+      "step": "",
+      "text": "10000 Ft adót kell fizetned!"
+    }
+  ],
+  "CommunityChestCards": [
+    {
+      "money": "",
+      "step": "0",
+      "text": "Lépj a Start mezőre!"
+    },
+    {
+      "money": "10000",
+      "step": "",
+      "text": "Banki hiba történt, kapsz 10000 Ft-ot!"
+    },
+    {
+      "money": "-5000",
+      "step": "",
+      "text": "Orvoshoz kell menned, fizess 5000 Ft-ot!"
+    },
+    {
+      "money": "15000",
+      "step": "",
+      "text": "Bejött az élet, kapsz 15000 Ft-ot!"
+    },
+    {
+      "money": "10000",
+      "step": "",
+      "text": "Banki hiba történt, kapsz 10000 Ft-ot!"
+    },
+    {
+      "money": "",
+      "step": "10",
+      "text": "Lépj a Börtönbe!"
+    },
+    {
+      "money": "-3000",
+      "step": "",
+      "text": "Operába mész, fizess 3000 Ft-ot!"
+    },
+    {
+      "money": "10000",
+      "step": "",
+      "text": "Karácsonyi bónusz, kapsz 10000 Ft-ot!"
+    },
+    {
+      "money": "10000",
+      "step": "",
+      "text": "Fizesd ki az iskola költségeit: 10000 Ft!"
+    },
+    {
+      "money": "25000",
+      "step": "",
+      "text": "Örököltél 25000 Ft-ot!"
+    },
+    {
+      "money": "20000",
+      "step": "",
+      "text": "Megnyertél egy pert, kapsz 20000 Ft-ot!"
+    }
+  ]
+}
