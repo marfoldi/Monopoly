@@ -13,8 +13,7 @@ public class Table {
 	}
 
 	private void init() throws IOException {
-		JSONParser parser = new JSONParser("fields.json");
-		fields = parser.start();
+		fields = JSONParser.readFields("src\\main\\java\\resources\\fields.json");
 	}
 
 	public IField getField(int i) {

@@ -5,6 +5,17 @@ public class Card {
 	private Integer step;
 	private String text;
 	
+	public Card(){
+		super();
+	}
+	
+	public Card(Integer money, Integer step, String text) {
+		super();
+		this.money = money;
+		this.step = step;
+		this.text = text;
+	}
+	
 	public int getMoney() {
 		return money;
 	}
@@ -22,6 +33,17 @@ public class Card {
 	}
 	public void setText(String text) {
 		this.text = text;
+	}
+	public void setStepToNull(){
+		this.step=null;
+	}
+	public void setMoneyToNull(){
+		this.money=null;
+	}
+
+	@Override
+	public String toString() {
+		return "Money:"+money+" Step:"+step+" Text:"+text;
 	}
 	
 }
