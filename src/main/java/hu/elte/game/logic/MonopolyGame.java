@@ -38,6 +38,7 @@ public class MonopolyGame {
 		
 		if (!currentPlayer.decreaseWithHouse(landField)) {
 			// internal error
+			landField.sellHouse();
 			return;
 		}
 	}
