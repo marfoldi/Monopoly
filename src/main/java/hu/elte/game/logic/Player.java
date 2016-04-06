@@ -42,5 +42,13 @@ public class Player {
 		this.money -= field.getPrice();
 		return true;
 	}
+
+	public void increaseWithHouse(LandField field) {
+		this.money += field.getHousePrice() / 2;		
+	}
+	
+	public void increaseWithEstate(PurchasableField field) {
+		this.money += field.getPrice() / 2;
+	}
 	
 }

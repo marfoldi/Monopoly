@@ -39,7 +39,24 @@ public class MonopolyGame {
 	}
 	
 	public void sellHouse() {
+		IField field = table.get(currentPlayer.getPosition());
+		if (!field.getClass().equals(LandField.class)) {
+			// exception
+			return;
+		}
 		
+		LandField landField = (LandField) field;
+		if (!landField.getOwner().equals(currentPlayer)) {
+			// exception
+			return;
+		}
+		
+		if (!landField.sellHouse()) {
+			// exception
+			return;
+		}
+		
+		currentPlayer.increaseWithHouse(landField);
 	}
 	
 	private boolean ownsAll(LandField landField) {
