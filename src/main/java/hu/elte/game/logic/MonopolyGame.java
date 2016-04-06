@@ -3,6 +3,8 @@ package hu.elte.game.logic;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
+import hu.elte.game.logic.GameRuleException.CODE;
+
 public class MonopolyGame {
 	private ArrayList<IField> table;
 	private ArrayList<Player> players;
@@ -11,49 +13,48 @@ public class MonopolyGame {
 	
 	private Player currentPlayer;
 	
-	public void buildHouse() {
+	public void buildHouse() throws InvalidFieldException, GameRuleException {
+		
 		IField field = table.get(currentPlayer.getPosition());
+		
 		if (!field.getClass().equals(LandField.class)) {
-			// exception
-			return;
+			throw new InvalidFieldException(LandField.class, field.getClass());
 		}
 		
 		LandField landField = (LandField) field;
-		if (!ownsAll(landField) || !(landField.getHousePrice() <= currentPlayer.getMoney())) {
-			// exception
-			return;
+		
+		if (!ownsAll(landField)) {
+			throw new GameRuleException(CODE.CONDITION_FAILURE, "The Player does not owns every LandField in the city.");
+		}
+		
+		if (!(landField.getHousePrice() <= currentPlayer.getMoney())) {
+			throw new GameRuleException(CODE.INSUFFICIENT_FUNDS, "The Player does not have enough money to complete this action.");
 		}
 		
 		if (!landField.buildHouse()) {
-			// exception
-			return;
+			throw new GameRuleException(CODE.CONDITION_FAILURE, "The Player can not build house on this field");
 		}
 		
 		// Build successful
 		
 		if (!currentPlayer.decreaseWithHouse(landField)) {
-			// internal error
-			landField.sellHouse();
-			return;
+			throw new RuntimeException("decreaseWithHouse failed");
 		}
 	}
 	
-	public void sellHouse() {
+	public void sellHouse() throws InvalidFieldException, GameRuleException {
 		IField field = table.get(currentPlayer.getPosition());
 		if (!field.getClass().equals(LandField.class)) {
-			// exception
-			return;
+			throw new InvalidFieldException(LandField.class, field.getClass());
 		}
 		
 		LandField landField = (LandField) field;
 		if (!landField.getOwner().equals(currentPlayer)) {
-			// exception
-			return;
+			throw new GameRuleException(CODE.CONDITION_FAILURE, "The Player does not owns this field.");
 		}
 		
 		if (!landField.sellHouse()) {
-			// exception
-			return;
+			throw new GameRuleException(CODE.CONDITION_FAILURE, "The Player can not sell house from this field");
 		}
 		
 		currentPlayer.increaseWithHouse(landField);
