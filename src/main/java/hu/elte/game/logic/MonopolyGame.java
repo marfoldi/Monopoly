@@ -1,6 +1,8 @@
 package hu.elte.game.logic;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Stack;
 import java.util.stream.Stream;
 
 import hu.elte.game.logic.GameRuleException.CODE;
@@ -8,10 +10,77 @@ import hu.elte.game.logic.GameRuleException.CODE;
 public class MonopolyGame {
 	private ArrayList<IField> table;
 	private ArrayList<Player> players;
+	
 	private ArrayList<Card> chanceCards;
+	private Stack<Card> chanceCardsStack;
+	
 	private ArrayList<Card> chestCards;
+	private Stack<Card> chestCardsStack;
 	
 	private Player currentPlayer;
+	
+	public MonopolyGame(ArrayList<IField> table, ArrayList<Player> players, ArrayList<Card> chanceCards, ArrayList<Card> chestCards) {
+		this.table = table;
+		this.players = players;
+		this.chanceCards = chanceCards;
+		this.chestCards = chestCards;
+		this.currentPlayer = this.players.get(0);
+		this.chanceCardsStack = new Stack<Card>();
+		this.chestCardsStack = new Stack<Card>();
+		
+		// Shuffle the cards
+		Collections.shuffle(this.chanceCards);
+		Collections.shuffle(this.chestCards);
+		
+		// Fill up the card stacks with the shuffled decks
+		this.chanceCardsStack.addAll(this.chanceCards);
+		this.chestCardsStack.addAll(this.chestCards);
+		
+	}
+	
+	/**
+	 * Gets a random chance Card from the deck.
+	 * Also performs the modifications on the Player object
+	 * Note: After this method there is a chance that the Player's money
+	 * is negative amount. The model can not continue until this is fixed
+	 * (by selling or taking up mortgages)
+	 * @return the random Card from the deck
+	 */
+	public Card getChanceCard() {
+		
+		// If the deck is empty, we shuffle and restock it 
+		if (this.chanceCardsStack.isEmpty()) {
+			Collections.shuffle(this.chanceCards);
+			this.chanceCardsStack.addAll(this.chanceCards);
+		}
+		
+		Card card = this.chanceCardsStack.pop();
+		currentPlayer.modifyWithCard(card);
+		
+		return card;
+	}
+	
+	/**
+	 * Gets a random chest Card from the deck.
+	 * Also performs the modifications on the Player object
+	 * Note: After this method there is a chance that the Player's money
+	 * is negative amount. The model can not continue until this is fixed
+	 * (by selling or taking up mortgages)
+	 * @return the random Card from the deck
+	 */
+	public Card getChestCard() {
+		
+		// If the deck is empty, we shuffle and restock it 
+		if (this.chestCardsStack.isEmpty()) {
+			Collections.shuffle(this.chestCards);
+			this.chestCardsStack.addAll(this.chestCards);
+		}
+		
+		Card card = this.chestCardsStack.pop();
+		currentPlayer.modifyWithCard(card);
+		
+		return card;
+	}
 	
 	/**
 	 * Builds a house on the field where the current Player is standing.

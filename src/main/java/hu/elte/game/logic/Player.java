@@ -68,5 +68,16 @@ public class Player {
 	public void increaseWithEstate(PurchasableField field) {
 		this.money += field.getPrice() / 2;
 	}
+
+	/**
+	 * Modifies the Player's state by the Card's properties
+	 * This action is mandatory and can not be safe guarded, so the Player's
+	 * money can be negative amount after execution
+	 * @param card
+	 */
+	public void modifyWithCard(Card card) {
+		this.money += card.getMoney();
+		this.position = card.getStep();		
+	}
 	
 }
