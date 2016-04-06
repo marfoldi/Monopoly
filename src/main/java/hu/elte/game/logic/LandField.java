@@ -19,6 +19,21 @@ public class LandField extends PurchasableField {
 		return "LandField [" + super.toString() + "city=" + city + ", houseCount=" + houseCount + ", housePrice="
 				+ housePrice + "]";
 	}
+	
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object _other) {
+		if (!(_other instanceof LandField)) {
+			return false;
+		}
+		
+		PurchasableField other = (PurchasableField) _other;
+		return super.equals(other);
+	}
 
 	public String getCity() {
 		return city;

@@ -20,6 +20,21 @@ public class PurchasableField extends Field {
 	public String toString() {
 		return "PurchasableField [" + super.toString() + "price=" + price + ", incomings=" + incomings + "]";
 	}
+	
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object _other) {
+		if (!(_other instanceof PurchasableField)) {
+			return false;
+		}
+		
+		Field other = (Field) _other;
+		return super.equals(other);
+	}
 
 	public void setOwner(Player owner) {
 		this.owner = owner;
