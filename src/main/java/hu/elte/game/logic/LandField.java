@@ -47,12 +47,24 @@ public class LandField extends PurchasableField {
 		return housePrice;
 	}
 
-	public void buildHouse() {
+	public boolean buildHouse() {
+		if (houseCount >= 5) {
+			houseCount = 5;
+			return false;
+		}
+		
 		houseCount++;
+		return true;
 	}
 
-	public void sellHouse() {
+	public boolean sellHouse() {
+		if (houseCount <= 0) {
+			houseCount = 0;
+			return false;
+		}
+		
 		houseCount--;
+		return true;
 	}
 
 }
