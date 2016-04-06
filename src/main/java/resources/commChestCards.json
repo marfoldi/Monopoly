@@ -1,59 +1,57 @@
-{
-"CommunityChestCards": [
-    {
-      "money": "",
-      "step": "0",
-      "text": "Lépj a Start mezőre!"
-    },
-    {
-      "money": "10000",
-      "step": "",
-      "text": "Banki hiba történt, kapsz 10000 Ft-ot!"
-    },
-    {
-      "money": "-5000",
-      "step": "",
-      "text": "Orvoshoz kell menned, fizess 5000 Ft-ot!"
-    },
-    {
-      "money": "15000",
-      "step": "",
-      "text": "Bejött az élet, kapsz 15000 Ft-ot!"
-    },
-    {
-      "money": "10000",
-      "step": "",
-      "text": "Banki hiba történt, kapsz 10000 Ft-ot!"
-    },
-    {
-      "money": "",
-      "step": "10",
-      "text": "Lépj a Börtönbe!"
-    },
-    {
-      "money": "-3000",
-      "step": "",
-      "text": "Operába mész, fizess 3000 Ft-ot!"
-    },
-    {
-      "money": "10000",
-      "step": "",
-      "text": "Karácsonyi bónusz, kapsz 10000 Ft-ot!"
-    },
-    {
-      "money": "10000",
-      "step": "",
-      "text": "Fizesd ki az iskola költségeit: 10000 Ft!"
-    },
-    {
-      "money": "25000",
-      "step": "",
-      "text": "Örököltél 25000 Ft-ot!"
-    },
-    {
-      "money": "20000",
-      "step": "",
-      "text": "Megnyertél egy pert, kapsz 20000 Ft-ot!"
-    }
-  ]
- }
+[
+  {
+     "money": 0,
+     "step": 0,
+     "text": "Lépj a Start mezőre!"
+   },
+   {
+     "money": 10000,
+     "step": 0,
+     "text": "Banki hiba történt, kapsz 10000 Ft-ot!"
+   },
+   {
+     "money": -5000,
+     "step": 0,
+     "text": "Orvoshoz kell menned, fizess 5000 Ft-ot!"
+   },
+   {
+     "money": 10000,
+     "step": 0,
+     "text": "Bejött az élet, kapsz 15000 Ft-ot!"
+   },
+   {
+     "money": 10000,
+     "step": 0,
+     "text": "Banki hiba történt, kapsz 10000 Ft-ot!"
+   },
+   {
+     "money": 0,
+     "step": 10,
+     "text": "Lépj a Börtönbe!"
+   },
+   {
+     "money": -3000,
+     "step": 0,
+     "text": "Operába mész, fizess 3000 Ft-ot!"
+   },
+   {
+     "money": 10000,
+     "step": 0,
+     "text": "Karácsonyi bónusz, kapsz 10000 Ft-ot!"
+   },
+   {
+     "money": 10000,
+     "step": 0,
+     "text": "Fizesd ki az iskola költségeit: 10000 Ft!"
+   },
+   {
+     "money": 25000,
+     "step": 0,
+     "text": "Örököltél 25000 Ft-ot!"
+   },
+   {
+     "money": 20000,
+     "step": 0,
+     "text": "Megnyertél egy pert, kapsz 20000 Ft-ot!"
+   }
+]

@@ -1,79 +1,77 @@
-{
-  "ChanceCards": [
-    {
-      "money": "",
-      "step": "0",
-      "text": "Lépj a Start mezőre!"
-    },
-    {
-      "money": "",
-      "step": "13",
-      "text": "Lépj a Színház térre!"
-    },
-    {
-      "money": "",
-      "step": "26",
-      "text": "Lépj a Dobó térre!"
-    },
-    {
-      "money": "",
-      "step": "5",
-      "text": "Lépj a Északi vasútra!"
-    },
-    {
-      "money": "",
-      "step": "15",
-      "text": "Lépj a Keleti vasútra!"
-    },
-    {
-      "money": "",
-      "step": "25",
-      "text": "Lépj a Déli vasútra!"
-    },
-    {
-      "money": "",
-      "step": "35",
-      "text": "Lépj a Nyugati vasútra!"
-    },
-    {
-      "money": "",
-      "step": "10",
-      "text": "Lépj a Börtönbe!"
-    },
-    {
-      "money": "",
-      "step": "20",
-      "text": "Pihenj az Ingyenes parkolóba!"
-    },
-    {
-      "money": "",
-      "step": "12",
-      "text": "Lépj az elektromos művekre!"
-    },
-    {
-      "money": "",
-      "step": "28",
-      "text": "Lépj a vízműre!"
-    },
-    {
-      "money": "15000",
-      "step": "",
-      "text": "A bank becsődölt, kapsz 15000 Ft-ot!"
-    },
-    {
-      "money": "30000",
-      "step": "",
-      "text": "Nyertél a lottón! Kapsz 30000 Ft-ot!"
-    },
-    {
-      "money": "",
-      "step": "-3",
-      "text": "Lépj vissza 3 mezőt!"
-    },
-    {
-      "money": "-10000",
-      "step": "",
-      "text": "10000 Ft adót kell fizetned!"
-    }
-  ]
-}
+[
+  {
+    "money": 0,
+    "step": 0,
+    "text": "Lépj a Start mezőre!"
+  },
+  {
+    "money": 0,
+    "step": 13,
+    "text": "Lépj a Színház térre!"
+  },
+  {
+    "money": 0,
+    "step": 26,
+    "text": "Lépj a Dobó térre!"
+  },
+  {
+    "money": 0,
+    "step": 5,
+    "text": "Lépj a Északi vasútra!"
+  },
+  {
+    "money": 0,
+    "step": 15,
+    "text": "Lépj a Keleti vasútra!"
+  },
+  {
+    "money": 0,
+    "step": 25,
+    "text": "Lépj a Déli vasútra!"
+  },
+  {
+    "money": 0,
+    "step": 35,
+    "text": "Lépj a Nyugati vasútra!"
+  },
+  {
+    "money": 0,
+    "step": 10,
+    "text": "Lépj a Börtönbe!"
+  },
+  {
+    "money": 0,
+    "step": 20,
+    "text": "Pihenj az Ingyenes parkolóba!"
+  },
+  {
+    "money": 0,
+    "step": 12,
+    "text": "Lépj az elektromos művekre!"
+  },
+  {
+    "money": 0,
+    "step": 28,
+    "text": "Lépj a vízműre!"
+  },
+  {
+    "money": 15000,
+    "step": 0,
+    "text": "A bank becsődölt, kapsz 15000 Ft-ot!"
+  },
+  {
+    "money": 30000,
+    "step": "",
+    "text": "Nyertél a lottón! Kapsz 30000 Ft-ot!"
+  },
+  {
+    "money": 0,
+    "step": -3,
+    "text": "Lépj vissza 3 mezőt!"
+  },
+  {
+    "money": -10000,
+    "step": 0,
+    "text": "10000 Ft adót kell fizetned!"
+  }
+]
