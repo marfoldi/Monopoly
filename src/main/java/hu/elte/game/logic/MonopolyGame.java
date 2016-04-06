@@ -19,11 +19,6 @@ public class MonopolyGame {
 		}
 		
 		LandField landField = (LandField) field;
-		if (!landField.getOwner().equals(currentPlayer)) {
-			// exception
-			return;
-		}
-		
 		if (!ownsAll(landField) || !(landField.getHousePrice() <= currentPlayer.getMoney())) {
 			// exception
 			return;
