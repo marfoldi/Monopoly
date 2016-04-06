@@ -59,8 +59,20 @@ public class MonopolyGame {
 		currentPlayer.increaseWithHouse(landField);
 	}
 	
+	/**
+	 * Helper method, checks that the current Player owns every LandField
+	 * in the argument's city.
+	 * @param landField
+	 * @return boolean whether or not the current Player owns all the LandFields
+	 * in the given city.
+	 */
 	private boolean ownsAll(LandField landField) {
+		
+		// Create IField stream
 		Stream<IField> fieldStream = table.stream();
+		
+		// Filter by the same city as the argument's city
+		// Aftermath: after the filtration, the elements of the stream are all LandFields 
 		Stream<IField> filteredStream = fieldStream.filter(field -> {
 			if (!field.getClass().equals(LandField.class)) {
 				return false;
@@ -70,7 +82,8 @@ public class MonopolyGame {
 			return currentField.getCity().equals(landField.getCity());
 		});
 		
-		
+		// Check if all of the LandFields are owned by the current Player
+		// Unchecked type cast is now allowed, because of the previous filter's aftermath 
 		return filteredStream.allMatch(field -> {
 			return ((LandField) field).getOwner().equals(currentPlayer);
 		});
