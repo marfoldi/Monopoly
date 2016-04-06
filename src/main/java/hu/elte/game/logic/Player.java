@@ -25,6 +25,11 @@ public class Player {
 		return this.name;
 	}
 	
+	/**
+	 * Decreases the Player's money by the argument's house price.
+	 * @param field
+	 * @return boolean, whether or not the Player had enough money to do the transfer
+	 */
 	public boolean decreaseWithHouse(LandField field) {
 		if (this.money < field.getHousePrice()) {
 			return false;
@@ -34,6 +39,11 @@ public class Player {
 		return true;
 	}
 	
+	/**
+	 * Decreases the Player's money by the argument's price.
+	 * @param field A PurchasableField (can be LandField)
+	 * @return boolean, whether or not the Player had enough money to do the transfer 
+	 */
 	public boolean decreaseWithEstate(PurchasableField field) {
 		if (this.money < field.getPrice()) {
 			return false;
@@ -43,10 +53,18 @@ public class Player {
 		return true;
 	}
 
+	/**
+	 * Increases the Player's money by the half of the argument's house price.
+	 * @param field
+	 */
 	public void increaseWithHouse(LandField field) {
 		this.money += field.getHousePrice() / 2;		
 	}
 	
+	/**
+	 * Increases the Player's money by the half of the argument's price.
+	 * @param field
+	 */
 	public void increaseWithEstate(PurchasableField field) {
 		this.money += field.getPrice() / 2;
 	}
