@@ -77,8 +77,11 @@ public class Player implements IPlayer {
 	 * @param card
 	 */
 	public void modifyWithCard(Card card) {
-		this.money += card.getMoney();
-		this.position = card.getStep();		
+		this.money += card.getMoney();		
+	}
+
+	public void setPosition(int position) {
+		this.position = (position < 0) ? 0 : position;
 	}
 	
 }

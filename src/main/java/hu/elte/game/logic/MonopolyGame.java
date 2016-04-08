@@ -257,6 +257,17 @@ public class MonopolyGame {
 	}
 	
 	/**
+	 * Sets a Player position on the Table, with a Dice parameter
+	 * If the new position is greater than the Table's size, it loops over
+	 * @param player
+	 * @param dice
+	 */
+	public void advancePlayerWithDice(Player player, IDice dice) {
+		int newPosition = (player.getPosition() + dice.getSum()) % this.table.size();
+		player.setPosition(newPosition);
+	}
+	
+	/**
 	 * Helper method, gets an IField object based on the 'name' property 
 	 * If multiple matches found (should not happen), then the first is returned
 	 * @param fieldName
