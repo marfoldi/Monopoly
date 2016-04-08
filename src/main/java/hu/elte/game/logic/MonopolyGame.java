@@ -86,7 +86,9 @@ public class MonopolyGame {
 	/**
 	 * Builds a house on the field where the current Player is standing.
 	 * @param fieldName the name of the Field which we want to build
-	 * @throws InvalidFieldException if the Player is not standing on a LandField
+	 * @throws InvalidFieldException
+	 *  - if there is no IField associated with the 'fieldName' parameter
+	 *  - if the associated IField is not an instance of LandField
 	 * @throws GameRuleException
 	 *  - if the Player does not own every LandField in the city
 	 *  - if the Player does not have enough money
@@ -140,7 +142,9 @@ public class MonopolyGame {
 	/**
 	 * Sells a house from the field where the current Player is standing. 
 	 * @param fieldName the name of the Field which we want to sell from
-	 * @throws InvalidFieldException if the Player is not standing on a LandField
+	 * @throws InvalidFieldException
+	 *  - if there is no IField associated with the 'fieldName' parameter
+	 *  - if the associated IField is not an instance of LandField
 	 * @throws GameRuleException
 	 *  - if the Player does not own the field
 	 *  - if the Player does not has houses on the field
