@@ -1,6 +1,6 @@
 package hu.elte.game.logic;
 
-public class Player {
+public class Player implements IPlayer {
 	private final int START_MONEY = 70000;
 	
 	private String name;
@@ -21,6 +21,7 @@ public class Player {
 		return this.money;
 	}
 	
+	@Override
 	public String getName() {
 		return this.name;
 	}
