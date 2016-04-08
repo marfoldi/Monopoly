@@ -6,4 +6,8 @@ public class InvalidFieldException extends Exception {
 	public InvalidFieldException(Class<?> expected, Class<?> received) {
 		super("Expected class: " + expected.toString() + ", received: " + received.toString());
 	}
+
+	public InvalidFieldException(String message) {
+		super(message);
+	}
 }
