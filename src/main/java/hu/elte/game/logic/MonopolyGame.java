@@ -21,6 +21,23 @@ public class MonopolyGame {
 	
 	private Player currentPlayer;
 	
+	/**
+	 * Set of statuses for the fields
+	 * The model can choose an action for players based on this
+	 *  - SELF_OWNED   : the field belongs to the Player, now the Player can make transactions
+	 *  - PLAYER_OWNED : the field belong to another Player, the current Player has to pay rent
+	 *  - BANK_OWNED   : the field does not belong to anybody, the current Player can buy it
+	 *  - NEUTRAL      : this is a neutral field, no action takes place
+	 *  - CHANCE_CARD  : the Player gets a chance card, and the properties on it
+	 *  - CHEST_CARD   : the Player gets a chest card, and the properties on it
+	 *  - JAIL         : this field is not going to be in the game...
+	 * @author I321357
+	 *
+	 */
+	public enum FIELD_STATUS {
+		SELF_OWNED, PLAYER_OWNED, BANK_OWNED, NEUTRAL, CHANCE_CARD, CHEST_CARD, JAIL
+	}
+	
 	public MonopolyGame(ArrayList<IField> table, ArrayList<Player> players, ArrayList<Card> chanceCards, ArrayList<Card> chestCards) {
 		this.table = table;
 		this.players = players;
