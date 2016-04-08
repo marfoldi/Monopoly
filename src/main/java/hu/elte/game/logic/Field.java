@@ -32,6 +32,7 @@ public class Field implements IField {
 		return this.name.equals(other.getName());
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
