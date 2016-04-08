@@ -185,6 +185,65 @@ public class MonopolyGame {
 	}
 	
 	/**
+	 * Changes a PurchasableField's (can also be LandField) mortgage property.
+	 * If the mortgage's new value is true, the Player's money is increased by the PurchasableField's mortgage value
+	 * If the mortgage's new value is false, the Player's money is decreased by the PurchasableField's mortgage value 
+	 * Does nothing if the field's current mortgage property is equals to the new one
+	 * @param fieldName the field which we want to apply the new mortgage property
+	 * @param isUnderMortgage whether or not this field is getting under mortgage
+	 * @throws InvalidFieldException
+	 *  - if there is no IField associated with the 'fieldName' parameter
+	 *  - if the associated IField is not an instance of PurchasableField
+	 * @throws GameRuleException
+	 *  - if the Player does not owns the field
+	 *  - if the Player does not have enough money to set the mortgage to false
+	 */
+	public void setMortgage(String fieldName, boolean isUnderMortgage) throws InvalidFieldException, GameRuleException {
+		
+		// Get the IField with the name 'fieldName'
+		IField field = getFieldForName(fieldName);
+		
+		// Check if the field is exists
+		if (field == null) {
+			throw new InvalidFieldException("Field not found: " + fieldName);
+		}
+		
+		// Check if the field is PurchasableField
+		if (!field.getClass().equals(PurchasableField.class)) {
+			throw new InvalidFieldException(PurchasableField.class, field.getClass());
+		}
+		
+		// After the type check we can cast it
+		PurchasableField purchasableField = (PurchasableField) field;
+		
+		// Check if the Player owns this field
+		if (!purchasableField.getOwner().equals(currentPlayer)) {
+			throw new GameRuleException(CODE.CONDITION_FAILURE, "The Player does not owns this field.");
+		}
+		
+		// Check the current 'mortgage' property
+		// If its the same as the parameter, don't do anything
+		if (purchasableField.isMortgage() == isUnderMortgage) {
+			return;
+		}
+		
+		// Toggle the 'mortgage' property
+		// Also increase / decrease the Player's money
+		if (isUnderMortgage) {
+			this.currentPlayer.increaseWithEstate(purchasableField);
+			purchasableField.setMortgage(true);
+		} else {
+			// decreaseWithEstate returns true if the Player had enough money
+			// Note: also decreases the Player's money on success
+			if (this.currentPlayer.decreaseWithEstate(purchasableField)) {
+				purchasableField.setMortgage(false);
+			} else {
+				throw new GameRuleException(CODE.INSUFFICIENT_FUNDS, "The Player does not have enough money to complete this action.");
+			}
+		}
+	}
+	
+	/**
 	 * Helper method, gets an IField object based on the 'name' property 
 	 * If multiple matches found (should not happen), then the first is returned
 	 * @param fieldName
