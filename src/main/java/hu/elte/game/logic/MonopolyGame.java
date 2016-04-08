@@ -2,6 +2,7 @@ package hu.elte.game.logic;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Stack;
 import java.util.stream.Stream;
 
@@ -84,16 +85,22 @@ public class MonopolyGame {
 	
 	/**
 	 * Builds a house on the field where the current Player is standing.
+	 * @param fieldName the name of the Field which we want to build
 	 * @throws InvalidFieldException if the Player is not standing on a LandField
 	 * @throws GameRuleException
 	 *  - if the Player does not own every LandField in the city
 	 *  - if the Player does not have enough money
 	 *  - if the number of houses on the LandField is reached the maximum amount
 	 */
-	public void buildHouse() throws InvalidFieldException, GameRuleException {
+	public void buildHouse(String fieldName) throws InvalidFieldException, GameRuleException {
 		
-		// Get the IField where the current Player is standing.
-		IField field = table.get(currentPlayer.getPosition());
+		// Get the IField with the name 'fieldName'
+		IField field = getFieldForName(fieldName);
+		
+		// Check if the field is exists
+		if (field == null) {
+			throw new InvalidFieldException("Field not found: " + fieldName);
+		}
 		
 		// Check if the field is LandField
 		if (!field.getClass().equals(LandField.class)) {
@@ -129,18 +136,24 @@ public class MonopolyGame {
 			throw new RuntimeException("decreaseWithHouse failed");
 		}
 	}
-	
+
 	/**
 	 * Sells a house from the field where the current Player is standing. 
+	 * @param fieldName the name of the Field which we want to sell from
 	 * @throws InvalidFieldException if the Player is not standing on a LandField
 	 * @throws GameRuleException
 	 *  - if the Player does not own the field
 	 *  - if the Player does not has houses on the field
 	 */
-	public void sellHouse() throws InvalidFieldException, GameRuleException {
+	public void sellHouse(String fieldName) throws InvalidFieldException, GameRuleException {
 		
-		// Get the IField where the current Player is standing.
-		IField field = table.get(currentPlayer.getPosition());
+		// Get the IField with the name 'fieldName'
+		IField field = getFieldForName(fieldName);
+		
+		// Check if the field is exists
+		if (field == null) {
+			throw new InvalidFieldException("Field not found: " + fieldName);
+		}
 		
 		// Check if the field is LandField
 		if (!field.getClass().equals(LandField.class)) {
@@ -165,6 +178,19 @@ public class MonopolyGame {
 		
 		// Increase the Player's money
 		currentPlayer.increaseWithHouse(landField);
+	}
+	
+	/**
+	 * Helper method, gets an IField object based on the 'name' property 
+	 * If multiple matches found (should not happen), then the first is returned
+	 * @param fieldName
+	 * @return IField the field matching 'name', null if there is no field matching 'name'
+	 */
+	private IField getFieldForName(String fieldName) {
+		Stream<IField> fieldStream = this.table.stream();
+		Optional<IField> matchingField = fieldStream.filter(field -> field.getClass().equals(fieldName)).findFirst();
+
+		return (matchingField.isPresent()) ? matchingField.get() : null;
 	}
 	
 	/**
