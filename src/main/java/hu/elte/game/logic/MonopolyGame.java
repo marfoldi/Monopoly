@@ -3,6 +3,7 @@ package hu.elte.game.logic;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Stack;
 import java.util.stream.Stream;
 
@@ -241,6 +242,18 @@ public class MonopolyGame {
 				throw new GameRuleException(CODE.INSUFFICIENT_FUNDS, "The Player does not have enough money to complete this action.");
 			}
 		}
+	}
+	
+	/**
+	 * Rolls the dice (2 dices)
+	 * @return
+	 */
+	public Dice rollDice() {
+		Random rand = new Random();
+		int first = rand.nextInt(6) + 1;
+		int second = rand.nextInt(6) + 1;
+		
+		return new Dice(first, second);
 	}
 	
 	/**
