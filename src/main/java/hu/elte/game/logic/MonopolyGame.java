@@ -203,6 +203,92 @@ public class MonopolyGame {
 		// Increase the Player's money
 		currentPlayer.increaseWithHouse(landField);
 	}
+	
+	/**
+	 * Sets the owner of a PurchasableField (can also be LandField) to the Player
+	 * Also decreases the Player's money with the estate's price
+	 * @param playerName
+	 * @param fieldName
+	 * @throws InvalidFieldException
+	 *  - If the IField for the String 'fieldName' is not an instance of PurchasableField
+	 * @throws GameRuleException 
+	 *  - If someone already owns the estate
+	 *  - If the Player does not have enough money to buy the estate
+	 */
+	public void buyEstate(String playerName, String fieldName) throws InvalidFieldException, GameRuleException {
+		
+		// Get the IField with the name 'fieldName'
+		IField field = getFieldForName(fieldName);
+		if (field == null) {
+			throw new IllegalArgumentException("Field not found: " + fieldName);
+		}
+		
+		// Get the Player with the name 'playerName'
+		Player player = getPlayerForName(playerName);
+		if (player == null) {
+			throw new IllegalArgumentException("Player not found: " + playerName);
+		}
+				
+		// Check if the field is LandField
+		if (!(field instanceof PurchasableField)) {
+			throw new InvalidFieldException(PurchasableField.class, field.getClass());
+		}
+		PurchasableField purchasableField = (PurchasableField) field;
+		
+		// Check if no one owns the field
+		if (purchasableField.getOwner() != null) {
+			throw new GameRuleException(CODE.CONDITION_FAILURE, "The estate is not bank owned");
+		}
+		
+		// Check if the Player has enough money to do the transaction
+		// Side effect: method also decreases the Player's money on success
+		if (player.decreaseWithEstate(purchasableField)) {
+			purchasableField.setOwner(player);
+		} else {
+			throw new GameRuleException(CODE.INSUFFICIENT_FUNDS, "The Player does not have enough money to complete this action.");
+		}
+		
+	}
+	
+	/**
+	 * Sets the owner of a PurchasableField (can also be LandField) to the bank (null)
+	 * Also increases the Player's money with the half of the estate's price
+	 * @param playerName
+	 * @param fieldName
+	 * @throws InvalidFieldException
+	 *  - If the IField for the String 'fieldName' is not an instance of PurchasableField
+	 * @throws GameRuleException 
+	 *  - If the Player does not owns the estate
+	 */
+	public void sellEstate(String playerName, String fieldName) throws InvalidFieldException, GameRuleException {
+		
+		// Get the IField with the name 'fieldName'
+		IField field = getFieldForName(fieldName);
+		if (field == null) {
+			throw new IllegalArgumentException("Field not found: " + fieldName);
+		}
+		
+		// Get the Player with the name 'playerName'
+		Player player = getPlayerForName(playerName);
+		if (player == null) {
+			throw new IllegalArgumentException("Player not found: " + playerName);
+		}
+			
+		// Check if the field is LandField
+		if (!(field instanceof PurchasableField)) {
+			throw new InvalidFieldException(PurchasableField.class, field.getClass());
+		}
+		PurchasableField purchasableField = (PurchasableField) field;
+				
+		// Check if no one owns the field
+		if (purchasableField.getOwner() == null || !purchasableField.getOwner().getName().equals(playerName)) {
+			throw new GameRuleException(CODE.CONDITION_FAILURE, "The Player does not owns the field");
+		}
+		
+		// Set the owner to null, and increase the Player's money
+		purchasableField.setOwner(null);
+		player.increaseWithEstate(purchasableField);
+	}
 
 	/**
 	 * Changes a PurchasableField's (can also be LandField) mortgage property.
