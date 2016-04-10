@@ -103,6 +103,7 @@ public class MonopolyGame {
 	
 	/**
 	 * Builds a house on the field where the current Player is standing.
+	 * @param playerName the name of the Player who wants to build
 	 * @param fieldName the name of the Field which we want to build
 	 * @throws InvalidFieldException
 	 *  - if there is no IField associated with the 'fieldName' parameter
@@ -112,53 +113,52 @@ public class MonopolyGame {
 	 *  - if the Player does not have enough money
 	 *  - if the number of houses on the LandField is reached the maximum amount
 	 */
-	public void buildHouse(String fieldName) throws InvalidFieldException, GameRuleException {
+	public void buildHouse(String playerName, String fieldName) throws InvalidFieldException, GameRuleException {
 		
 		// Get the IField with the name 'fieldName'
 		IField field = getFieldForName(fieldName);
-		
-		// Check if the field is exists
 		if (field == null) {
-			throw new InvalidFieldException("Field not found: " + fieldName);
+			throw new IllegalArgumentException("Field not found: " + fieldName);
 		}
 		
 		// Check if the field is LandField
 		if (!field.getClass().equals(LandField.class)) {
 			throw new InvalidFieldException(LandField.class, field.getClass());
 		}
-		
-		// After the type check we can cast it
 		LandField landField = (LandField) field;
 		
+		// Get the Player with the name 'playerName'
+		Player player = getPlayerForName(playerName);
+		if (player == null) {
+			throw new IllegalArgumentException("Player not found: " + playerName);
+		}
+		
 		// Check if the Player owns every LandField in the city
-		if (!ownsAll(landField)) {
+		if (!ownsAll(playerName, landField)) {
 			throw new GameRuleException(CODE.CONDITION_FAILURE, "The Player does not owns every LandField in the city.");
 		}
-		
-		// Check if the Player has enough money
-		// Aftermath: After this point the Player object's 'decreaseWithHouse' method has to return TRUE
-		if (!(landField.getHousePrice() <= currentPlayer.getMoney())) {
-			throw new GameRuleException(CODE.INSUFFICIENT_FUNDS, "The Player does not have enough money to complete this action.");
-		}
-		
+				
 		// Check if we can build a house on this field.
-		// Side effect: method also increases the 'houseCount' on success
-		if (!landField.buildHouse()) {
+		if (landField.getHouseCount() == 5) {
 			throw new GameRuleException(CODE.CONDITION_FAILURE, "The Player can not build house on this field");
-		}
-		
-		// After this point, we were able to build the house
+		}		
 		
 		// Check if we can decrease the Player's money
 		// Side effect: method also decreases the Player's money on success
-		if (!currentPlayer.decreaseWithHouse(landField)) {
-			// This method could not fail, because of the 'money check's aftermath.
-			throw new RuntimeException("decreaseWithHouse failed");
+		if (player.decreaseWithHouse(landField)) {
+			// Check if we can build the house
+			// Side effect: method also increases the 'houseCount' property on success
+			if (!landField.buildHouse()) {
+				throw new RuntimeException("buildHouse failed");
+			}
+		} else {
+			throw new GameRuleException(CODE.INSUFFICIENT_FUNDS, "The Player does not have enough money to complete this action.");
 		}
 	}
 
 	/**
-	 * Sells a house from the field where the current Player is standing. 
+	 * Sells a house from the field where the current Player is standing.
+	 * @param playerName the name of the Player who wants to sell 
 	 * @param fieldName the name of the Field which we want to sell from
 	 * @throws InvalidFieldException
 	 *  - if there is no IField associated with the 'fieldName' parameter
@@ -167,12 +167,10 @@ public class MonopolyGame {
 	 *  - if the Player does not own the field
 	 *  - if the Player does not has houses on the field
 	 */
-	public void sellHouse(String fieldName) throws InvalidFieldException, GameRuleException {
+	public void sellHouse(String playerName, String fieldName) throws InvalidFieldException, GameRuleException {
 		
 		// Get the IField with the name 'fieldName'
 		IField field = getFieldForName(fieldName);
-		
-		// Check if the field is exists
 		if (field == null) {
 			throw new InvalidFieldException("Field not found: " + fieldName);
 		}
@@ -181,12 +179,16 @@ public class MonopolyGame {
 		if (!field.getClass().equals(LandField.class)) {
 			throw new InvalidFieldException(LandField.class, field.getClass());
 		}
-		
-		// After the type check we can cast it
 		LandField landField = (LandField) field;
 		
+		// Get the Player with the name 'playerName'
+		Player player = getPlayerForName(playerName);
+		if (player == null) {
+			throw new IllegalArgumentException("Player not found: " + playerName);
+		}
+		
 		// Check if the Player owns this field
-		if (!landField.getOwner().equals(currentPlayer)) {
+		if (landField.getOwner() == null || !landField.getOwner().getName().equals(playerName)) {
 			throw new GameRuleException(CODE.CONDITION_FAILURE, "The Player does not owns this field.");
 		}
 		
@@ -201,12 +203,13 @@ public class MonopolyGame {
 		// Increase the Player's money
 		currentPlayer.increaseWithHouse(landField);
 	}
-	
+
 	/**
 	 * Changes a PurchasableField's (can also be LandField) mortgage property.
 	 * If the mortgage's new value is true, the Player's money is increased by the PurchasableField's mortgage value
 	 * If the mortgage's new value is false, the Player's money is decreased by the PurchasableField's mortgage value 
 	 * Does nothing if the field's current mortgage property is equals to the new one
+	 * @param playerName
 	 * @param fieldName the field which we want to apply the new mortgage property
 	 * @param isUnderMortgage whether or not this field is getting under mortgage
 	 * @throws InvalidFieldException
@@ -216,12 +219,10 @@ public class MonopolyGame {
 	 *  - if the Player does not owns the field
 	 *  - if the Player does not have enough money to set the mortgage to false
 	 */
-	public void setMortgage(String fieldName, boolean isUnderMortgage) throws InvalidFieldException, GameRuleException {
+	public void setMortgage(String playerName, String fieldName, boolean isUnderMortgage) throws InvalidFieldException, GameRuleException {
 		
 		// Get the IField with the name 'fieldName'
 		IField field = getFieldForName(fieldName);
-		
-		// Check if the field is exists
 		if (field == null) {
 			throw new InvalidFieldException("Field not found: " + fieldName);
 		}
@@ -230,12 +231,16 @@ public class MonopolyGame {
 		if (!field.getClass().equals(PurchasableField.class)) {
 			throw new InvalidFieldException(PurchasableField.class, field.getClass());
 		}
-		
-		// After the type check we can cast it
 		PurchasableField purchasableField = (PurchasableField) field;
 		
+		// Get the Player with the name 'playerName'
+		Player player = getPlayerForName(playerName);
+		if (player == null) {
+			throw new IllegalArgumentException("Player not found: " + playerName);
+		}
+		
 		// Check if the Player owns this field
-		if (!purchasableField.getOwner().equals(currentPlayer)) {
+		if (purchasableField.getOwner() == null || !purchasableField.getOwner().getName().equals(playerName)) {
 			throw new GameRuleException(CODE.CONDITION_FAILURE, "The Player does not owns this field.");
 		}
 		
@@ -248,12 +253,12 @@ public class MonopolyGame {
 		// Toggle the 'mortgage' property
 		// Also increase / decrease the Player's money
 		if (isUnderMortgage) {
-			this.currentPlayer.increaseWithEstate(purchasableField);
+			player.increaseWithEstate(purchasableField);
 			purchasableField.setMortgage(true);
 		} else {
 			// decreaseWithEstate returns true if the Player had enough money
 			// Note: also decreases the Player's money on success
-			if (this.currentPlayer.decreaseWithEstate(purchasableField)) {
+			if (player.decreaseWithEstate(purchasableField)) {
 				purchasableField.setMortgage(false);
 			} else {
 				throw new GameRuleException(CODE.INSUFFICIENT_FUNDS, "The Player does not have enough money to complete this action.");
@@ -285,6 +290,19 @@ public class MonopolyGame {
 	}
 	
 	/**
+	 * Gets a Player object for a String name
+	 * @param playerName
+	 * @return
+	 */
+	private Player getPlayerForName(String playerName) {
+		Stream<Player> playerStream = this.players.stream();
+		Stream<Player> filteredStream = playerStream.filter(player -> player.getName().equals(playerName));
+		
+		Optional<Player> player = filteredStream.findFirst();
+		return (player.isPresent()) ? player.get() : null;
+	}
+	
+	/**
 	 * Helper method, gets an IField object based on the 'name' property 
 	 * If multiple matches found (should not happen), then the first is returned
 	 * @param fieldName
@@ -298,32 +316,34 @@ public class MonopolyGame {
 	}
 	
 	/**
-	 * Helper method, checks that the current Player owns every LandField
+	 * Helper method, checks that the Player owns every LandField
 	 * in the argument's city.
+	 * @param playerName
 	 * @param landField
 	 * @return boolean whether or not the current Player owns all the LandFields
 	 * in the given city.
 	 */
-	private boolean ownsAll(LandField landField) {
+	private boolean ownsAll(String playerName, LandField field) {
 		
 		// Create IField stream
 		Stream<IField> fieldStream = table.stream();
 		
 		// Filter by the same city as the argument's city
 		// Aftermath: after the filtration, the elements of the stream are all LandFields 
-		Stream<IField> filteredStream = fieldStream.filter(field -> {
-			if (!field.getClass().equals(LandField.class)) {
+		Stream<IField> filteredStream = fieldStream.filter(iField -> {
+			if (!iField.getClass().equals(LandField.class)) {
 				return false;
 			}
 			
-			LandField currentField = (LandField) field;
-			return currentField.getCity().equals(landField.getCity());
+			LandField currentField = (LandField) iField;
+			return currentField.getCity().equals(field.getCity());
 		});
 		
 		// Check if all of the LandFields are owned by the current Player
 		// Unchecked type cast is now allowed, because of the previous filter's aftermath 
-		return filteredStream.allMatch(field -> {
-			return ((LandField) field).getOwner().equals(currentPlayer);
+		return filteredStream.allMatch(iField -> {
+			LandField landField = (LandField) iField;
+			return (landField.getOwner() != null) && (landField.getOwner().getName().equals(playerName));
 		});
 	}
 }
