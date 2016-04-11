@@ -3,17 +3,19 @@
  */
 package hu.elte.game.view;
 
-import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.Icon;
+import javax.swing.JButton;
 
 /**
  * @author marfoldi
  *
  */
-public class Field {
+public class Field extends JButton {
 	protected String name;
-	protected Image img;
+	protected Icon img;
 	protected List<Player> players;
 	
 	/**
@@ -22,11 +24,13 @@ public class Field {
 	 * @param img
 	 * @param players
 	 */
-	public Field(String name, Image img, List<Player> players) {
+	public Field(String name, Icon img, List<Player> players) {
 		super();
 		this.name = name;
 		this.img = img;
 		this.players = players;
+		this.setText(name);
+		this.setIcon(img);
 	}
 	
 	/**
@@ -34,7 +38,7 @@ public class Field {
 	 * @param name
 	 * @param img
 	 */
-	public Field(String name, Image img) {
+	public Field(String name, Icon img) {
 		super();
 		this.name = name;
 		this.img = img;
@@ -69,20 +73,6 @@ public class Field {
 	 */
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	/**
-	 * @return the img
-	 */
-	public Image getImg() {
-		return img;
-	}
-
-	/**
-	 * @param img the img to set
-	 */
-	public void setImg(Image img) {
-		this.img = img;
 	}
 
 	/**
