@@ -10,6 +10,8 @@ import java.util.stream.Stream;
 import hu.elte.game.logic.GameRuleException.CODE;
 
 public class MonopolyGame {
+	private final int START_MONEY = 70000;
+	
 	private ArrayList<IField> table;
 	private ArrayList<Player> players;
 	
@@ -74,7 +76,10 @@ public class MonopolyGame {
 		}
 		
 		Card card = this.chanceCardsStack.pop();
-		currentPlayer.modifyWithCard(card);
+		int money = card.getMoney();
+		if (money != 0) {
+			currentPlayer.setMoney(currentPlayer.getMoney() + money);
+		}
 		
 		return card;
 	}
@@ -96,7 +101,10 @@ public class MonopolyGame {
 		}
 		
 		Card card = this.chestCardsStack.pop();
-		currentPlayer.modifyWithCard(card);
+		int money = card.getMoney();
+		if (money != 0) {
+			currentPlayer.setMoney(currentPlayer.getMoney() + money);
+		}
 		
 		return card;
 	}
@@ -139,21 +147,18 @@ public class MonopolyGame {
 		}
 				
 		// Check if we can build a house on this field.
-		if (landField.getHouseCount() == 5) {
+		if (landField.getHouseCount() >= 5) {
 			throw new GameRuleException(CODE.CONDITION_FAILURE, "The Player can not build house on this field");
-		}		
+		}
 		
-		// Check if we can decrease the Player's money
-		// Side effect: method also decreases the Player's money on success
-		if (player.decreaseWithHouse(landField)) {
-			// Check if we can build the house
-			// Side effect: method also increases the 'houseCount' property on success
-			if (!landField.buildHouse()) {
-				throw new RuntimeException("buildHouse failed");
-			}
-		} else {
+		// Check if the player has enough money
+		if (player.getMoney() <= landField.getHousePrice()) {
 			throw new GameRuleException(CODE.INSUFFICIENT_FUNDS, "The Player does not have enough money to complete this action.");
 		}
+		
+		// Decrease the Player's money and build the house
+		player.setMoney(player.getMoney() - landField.getHousePrice());
+		landField.buildHouse();
 	}
 
 	/**
@@ -201,7 +206,8 @@ public class MonopolyGame {
 		// After this point, we were able to sell the house
 		
 		// Increase the Player's money
-		currentPlayer.increaseWithHouse(landField);
+		int houseValue = landField.getHousePrice() / 2;
+		player.setMoney(player.getMoney() + houseValue);
 	}
 	
 	/**
@@ -241,13 +247,13 @@ public class MonopolyGame {
 		}
 		
 		// Check if the Player has enough money to do the transaction
-		// Side effect: method also decreases the Player's money on success
-		if (player.decreaseWithEstate(purchasableField)) {
-			purchasableField.setOwner(player);
-		} else {
+		if (player.getMoney() <= purchasableField.getPrice()) {
 			throw new GameRuleException(CODE.INSUFFICIENT_FUNDS, "The Player does not have enough money to complete this action.");
 		}
 		
+		// Decrease the Player's money and set the new owner
+		player.setMoney(player.getMoney() - purchasableField.getPrice());
+		purchasableField.setOwner(player);
 	}
 	
 	/**
@@ -285,9 +291,10 @@ public class MonopolyGame {
 			throw new GameRuleException(CODE.CONDITION_FAILURE, "The Player does not owns the field");
 		}
 		
-		// Set the owner to null, and increase the Player's money
+		// Increase the Player's money and set the new owner to bank (null)
+		int estateValue = purchasableField.getPrice() / 2;
+		player.setMoney(player.getMoney() + estateValue);
 		purchasableField.setOwner(null);
-		player.increaseWithEstate(purchasableField);
 	}
 
 	/**
@@ -338,17 +345,21 @@ public class MonopolyGame {
 		
 		// Toggle the 'mortgage' property
 		// Also increase / decrease the Player's money
+		int mortgageValue = purchasableField.getPrice() / 2;
 		if (isUnderMortgage) {
-			player.increaseWithEstate(purchasableField);
+			
+			player.setMoney(player.getMoney() + mortgageValue);
 			purchasableField.setMortgage(true);
+			
 		} else {
-			// decreaseWithEstate returns true if the Player had enough money
-			// Note: also decreases the Player's money on success
-			if (player.decreaseWithEstate(purchasableField)) {
-				purchasableField.setMortgage(false);
-			} else {
+			
+			// Check if the Player has enough money
+			if (player.getMoney() <= mortgageValue) {
 				throw new GameRuleException(CODE.INSUFFICIENT_FUNDS, "The Player does not have enough money to complete this action.");
 			}
+			
+			player.setMoney(player.getMoney() - mortgageValue);
+			purchasableField.setMortgage(false);
 		}
 	}
 	
