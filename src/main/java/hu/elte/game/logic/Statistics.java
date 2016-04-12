@@ -96,6 +96,28 @@ public class Statistics {
 	}
 	
 	/**
+	 * Logs a transaction between two Players
+	 * (in special case one of the Player can be null thus indicating that is the BANK)
+	 * @param from
+	 * @param to
+	 * @param message
+	 * @param value
+	 */
+	public void transaction(String from, String to, String message, int value) {
+		if (from == null) from = "BANK";
+		if (to == null) to = "BANK";
+		Statistic statistic;
+		
+		checkPS(from);
+		statistic = new Statistic(Key.PAYMENT, to, message, Integer.toString(value));
+		this.playerStatistics.get(from).add(statistic);
+		
+		checkPS(to);
+		statistic = new Statistic(Key.INCOME, from, message, Integer.toString(value));
+		this.playerStatistics.get(to).add(statistic);
+	}
+	
+	/**
 	 * Creates an empty log for the given key, if there isn't any
 	 * @param key
 	 */
