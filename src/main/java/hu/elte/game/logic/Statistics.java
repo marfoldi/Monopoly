@@ -120,6 +120,7 @@ public class Statistics {
 	private class Statistic {
 		private Key key;
 		private String value;
+		private String message;
 		private String participant;
 		
 		public Statistic(Key key, String value) {
@@ -130,6 +131,11 @@ public class Statistics {
 		public Statistic(Key key, String participant, String value) {
 			this(key, value);
 			this.participant = participant;
+		}
+		
+		public Statistic(Key key, String participant, String message, String value) {
+			this(key, participant, value);
+			this.message = message;
 		}
 		
 		
@@ -143,6 +149,10 @@ public class Statistics {
 		
 		public String getValue() {
 			return this.value;
+		}
+		
+		public String getMessage() {
+			return this.message;
 		}
 	}
 }
