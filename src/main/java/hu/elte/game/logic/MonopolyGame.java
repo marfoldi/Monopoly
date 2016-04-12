@@ -78,6 +78,8 @@ public class MonopolyGame {
 		Card card = this.chanceCardsStack.pop();
 		int money = card.getMoney();
 		if (money != 0) {
+			// The Player's money can be negative after this action
+			// so we use the manual setMoney method that does not throw error
 			currentPlayer.setMoney(currentPlayer.getMoney() + money);
 		}
 		
@@ -103,6 +105,8 @@ public class MonopolyGame {
 		Card card = this.chestCardsStack.pop();
 		int money = card.getMoney();
 		if (money != 0) {
+			// The Player's money can be negative after this action
+			// so we use the manual setMoney method that does not throw error
 			currentPlayer.setMoney(currentPlayer.getMoney() + money);
 		}
 		
@@ -151,13 +155,9 @@ public class MonopolyGame {
 			throw new GameRuleException(CODE.CONDITION_FAILURE, "The Player can not build house on this field");
 		}
 		
-		// Check if the player has enough money
-		if (player.getMoney() <= landField.getHousePrice()) {
-			throw new GameRuleException(CODE.INSUFFICIENT_FUNDS, "The Player does not have enough money to complete this action.");
-		}
-		
 		// Decrease the Player's money and build the house
-		player.setMoney(player.getMoney() - landField.getHousePrice());
+		// Note: doTransaction throws error if the Player does not have enough money
+		player.doTransaction(landField.getHousePrice() * -1);
 		landField.buildHouse();
 	}
 
@@ -206,8 +206,9 @@ public class MonopolyGame {
 		// After this point, we were able to sell the house
 		
 		// Increase the Player's money
+		// houseValue is always positive, so the doTransaction won't fail
 		int houseValue = landField.getHousePrice() / 2;
-		player.setMoney(player.getMoney() + houseValue);
+		player.doTransaction(houseValue);
 	}
 	
 	/**
@@ -246,13 +247,9 @@ public class MonopolyGame {
 			throw new GameRuleException(CODE.CONDITION_FAILURE, "The estate is not bank owned");
 		}
 		
-		// Check if the Player has enough money to do the transaction
-		if (player.getMoney() <= purchasableField.getPrice()) {
-			throw new GameRuleException(CODE.INSUFFICIENT_FUNDS, "The Player does not have enough money to complete this action.");
-		}
-		
 		// Decrease the Player's money and set the new owner
-		player.setMoney(player.getMoney() - purchasableField.getPrice());
+		// Note: doTransaction throws error if the Player does not have enough money
+		player.doTransaction(purchasableField.getPrice() * -1);
 		purchasableField.setOwner(player);
 	}
 	
@@ -292,8 +289,9 @@ public class MonopolyGame {
 		}
 		
 		// Increase the Player's money and set the new owner to bank (null)
+		// estateValue is always positive, so the doTransaction won't fail
 		int estateValue = purchasableField.getPrice() / 2;
-		player.setMoney(player.getMoney() + estateValue);
+		player.doTransaction(estateValue);
 		purchasableField.setOwner(null);
 	}
 
@@ -348,17 +346,13 @@ public class MonopolyGame {
 		int mortgageValue = purchasableField.getPrice() / 2;
 		if (isUnderMortgage) {
 			
-			player.setMoney(player.getMoney() + mortgageValue);
+			player.doTransaction(mortgageValue);
 			purchasableField.setMortgage(true);
 			
 		} else {
 			
-			// Check if the Player has enough money
-			if (player.getMoney() <= mortgageValue) {
-				throw new GameRuleException(CODE.INSUFFICIENT_FUNDS, "The Player does not have enough money to complete this action.");
-			}
-			
-			player.setMoney(player.getMoney() - mortgageValue);
+			// Note: doTransaction throws error if the Player does not have enough money
+			player.doTransaction(mortgageValue * -1);
 			purchasableField.setMortgage(false);
 		}
 	}
