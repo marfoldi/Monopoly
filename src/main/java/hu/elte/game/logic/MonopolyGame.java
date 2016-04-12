@@ -21,8 +21,6 @@ public class MonopolyGame {
 	private ArrayList<Card> chestCards;
 	private Stack<Card> chestCardsStack;
 	
-	private Player currentPlayer;
-	
 	/**
 	 * Set of statuses for the fields
 	 * The model can choose an action for players based on this
@@ -45,7 +43,6 @@ public class MonopolyGame {
 		this.players = players;
 		this.chanceCards = chanceCards;
 		this.chestCards = chestCards;
-		this.currentPlayer = this.players.get(0);
 		this.chanceCardsStack = new Stack<Card>();
 		this.chestCardsStack = new Stack<Card>();
 		
@@ -65,9 +62,16 @@ public class MonopolyGame {
 	 * Note: After this method there is a chance that the Player's money
 	 * is negative amount. The model can not continue until this is fixed
 	 * (by selling or taking up mortgages)
+	 * @param playerName
 	 * @return the random Card from the deck
 	 */
-	public Card getChanceCard() {
+	public Card getChanceCardForPlayer(String playerName) {
+		
+		// Get the Player with the name 'playerName'
+		Player player = getPlayerForName(playerName);
+		if (player == null) {
+			throw new IllegalArgumentException("Player not found: " + playerName);
+		}
 		
 		// If the deck is empty, we shuffle and restock it 
 		if (this.chanceCardsStack.isEmpty()) {
@@ -80,7 +84,7 @@ public class MonopolyGame {
 		if (money != 0) {
 			// The Player's money can be negative after this action
 			// so we use the manual setMoney method that does not throw error
-			currentPlayer.setMoney(currentPlayer.getMoney() + money);
+			player.setMoney(player.getMoney() + money);
 		}
 		
 		return card;
@@ -92,9 +96,16 @@ public class MonopolyGame {
 	 * Note: After this method there is a chance that the Player's money
 	 * is negative amount. The model can not continue until this is fixed
 	 * (by selling or taking up mortgages)
+	 * @param playerName
 	 * @return the random Card from the deck
 	 */
-	public Card getChestCard() {
+	public Card getChestCardForPlayer(String playerName) {
+		
+		// Get the Player with the name 'playerName'
+		Player player = getPlayerForName(playerName);
+		if (player == null) {
+			throw new IllegalArgumentException("Player not found: " + playerName);
+		}
 		
 		// If the deck is empty, we shuffle and restock it 
 		if (this.chestCardsStack.isEmpty()) {
@@ -107,7 +118,7 @@ public class MonopolyGame {
 		if (money != 0) {
 			// The Player's money can be negative after this action
 			// so we use the manual setMoney method that does not throw error
-			currentPlayer.setMoney(currentPlayer.getMoney() + money);
+			player.setMoney(player.getMoney() + money);
 		}
 		
 		return card;
