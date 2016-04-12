@@ -381,6 +381,20 @@ public class MonopolyGame {
 	}
 	
 	/**
+	 * Gets an IField's name by the given index
+	 * Returns null if there is no table yet or the index is out of range
+	 * @param index
+	 * @return
+	 */
+	public String getFieldNameForIndex(int index) {
+		if (this.table == null || index < 0 || index >= this.table.size()) {
+			return null;
+		}
+		
+		return this.table.get(index).getName();
+	}
+	
+	/**
 	 * Gets a Player object for a String name
 	 * @param playerName
 	 * @return
