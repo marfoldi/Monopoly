@@ -6,7 +6,7 @@ import java.util.HashMap;
 public class Statistics {
 	
 	public enum Key {
-		PURCHASE, RENT, SALE, INCOME, MORTGAGE, CARD
+		RENT, PURCHASE, PAYMENT, SALE, INCOME, MORTGAGE, CARD
 	}
 	
 	private HashMap<String, ArrayList<Statistic>> playerStatistics;
@@ -19,6 +19,8 @@ public class Statistics {
 	
 	/**
 	 * Logs an  estate's owner change.
+	 * Does not log the income / payment that comes with the change,
+	 * for that use the 'transaction' method 
 	 * @param oldOwner
 	 * @param newOwner
 	 * @param estate
@@ -54,12 +56,12 @@ public class Statistics {
 		
 		// Log the guest's RENT action
 		checkPS(guest);
-		statistic = new Statistic(Key.RENT, owner, Integer.toString(value));
+		statistic = new Statistic(Key.RENT, owner, estate, Integer.toString(value));
 		this.playerStatistics.get(guest).add(statistic);
 		
 		// Log the owner's INCOME action
 		checkPS(owner);
-		statistic = new Statistic(Key.INCOME, guest, Integer.toString(value));
+		statistic = new Statistic(Key.INCOME, guest, estate, Integer.toString(value));
 		this.playerStatistics.get(owner).add(statistic);
 		
 		// Log the field's INCOME action
