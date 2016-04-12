@@ -29,17 +29,16 @@ public class Statistics {
 		
 		// Log the oldOwner's SALE action
 		checkPS(oldOwner);
-		statistic = new Statistic(Key.SALE, newOwner, value);
+		statistic = new Statistic(Key.SALE, newOwner, Integer.toString(value));
 		this.playerStatistics.get(oldOwner).add(statistic);
 		
 		// Log the newOwner's PURCHASE action
 		checkPS(newOwner);
-		statistic = new Statistic(Key.PURCHASE, oldOwner, value);
+		statistic = new Statistic(Key.PURCHASE, oldOwner, Integer.toString(value));
 		this.playerStatistics.get(newOwner).add(statistic);
 		
 		// Reset the field's action history
 		checkFS(estate);
-		statistic = new Statistic(Key.PURCHASE, value);
 		this.fieldStatistics.get(estate).clear();
 	}
 	
@@ -55,17 +54,42 @@ public class Statistics {
 		
 		// Log the guest's RENT action
 		checkPS(guest);
-		statistic = new Statistic(Key.RENT, owner, value);
+		statistic = new Statistic(Key.RENT, owner, Integer.toString(value));
 		this.playerStatistics.get(guest).add(statistic);
 		
 		// Log the owner's INCOME action
 		checkPS(owner);
-		statistic = new Statistic(Key.INCOME, guest, value);
+		statistic = new Statistic(Key.INCOME, guest, Integer.toString(value));
 		this.playerStatistics.get(owner).add(statistic);
 		
 		// Log the field's INCOME action
 		checkFS(estate);
-		statistic = new Statistic(Key.INCOME, guest, value);
+		statistic = new Statistic(Key.INCOME, guest, Integer.toString(value));
+		this.fieldStatistics.get(estate).add(statistic);
+	}
+	
+	/**
+	 * Logs a field's mortgage change
+	 * @param owner
+	 * @param estate
+	 * @param isUnderMortgage
+	 */
+	public void mortgageSet(String owner, String estate, boolean isUnderMortgage, int value) {
+		Statistic statistic;
+		
+		// Log the owner's MORTGAGE action
+		checkPS(owner);
+		statistic = new Statistic(Key.MORTGAGE, estate, Boolean.toString(isUnderMortgage));
+		this.playerStatistics.get(owner).add(statistic);
+		
+		// Log the owner's INCOME / PAYMENT action depending on the state of 'isUnderMortgage'
+		String from = isUnderMortgage ? null : owner;
+		String to = isUnderMortgage ? owner : null;
+		transaction(from, to, "Mortgage on: " + estate, value);
+		
+		// Log the field's MORTGAGE action
+		checkFS(estate);
+		statistic = new Statistic(Key.MORTGAGE, owner, Boolean.toString(isUnderMortgage));
 		this.fieldStatistics.get(estate).add(statistic);
 	}
 	
@@ -95,29 +119,30 @@ public class Statistics {
 	 */
 	private class Statistic {
 		private Key key;
-		private int value;
-		private String player;
+		private String value;
+		private String participant;
 		
-		public Statistic(Key key, int value) {
+		public Statistic(Key key, String value) {
 			this.key = key;
 			this.value = value;
 		}
 		
-		public Statistic(Key key, String player, int value) {
+		public Statistic(Key key, String participant, String value) {
 			this(key, value);
-			this.player = player;
+			this.participant = participant;
 		}
+		
 		
 		public Key getKey() {
 			return this.key;
 		}
 		
-		public int getValue() {
-			return this.value;
+		public String getParticipant() {
+			return this.participant;
 		}
 		
-		public String getPlayer() {
-			return this.player;
+		public String getValue() {
+			return this.value;
 		}
 	}
 }
