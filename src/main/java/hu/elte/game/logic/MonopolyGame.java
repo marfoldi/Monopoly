@@ -57,6 +57,63 @@ public class MonopolyGame {
 	}
 	
 	/**
+	 * Gets the status for a Field by it's name
+	 * The status is relative to a Player
+	 * @param playerName
+	 * @param fieldName
+	 * @return
+	 */
+	public FIELD_STATUS getStatusForField(String playerName, String fieldName) {
+		
+		// Get the Player with the name 'playerName'
+		Player player = getPlayerForName(playerName);
+		if (player == null) {
+			throw new IllegalArgumentException("Player not found: " + playerName);
+		}
+		
+		// Get the Field with the name fieldName
+		IField field = getFieldForName(fieldName);
+		if (field == null) {
+			throw new IllegalArgumentException("Field not found: " + fieldName);
+		}
+		Class<?> clazz = field.getClass();
+		
+		// Check the type of the IField
+		
+		// TODO: how to determine if it is a chance-chest card or a neutral field?
+		if (clazz.equals(Field.class)) {
+			
+			return FIELD_STATUS.NEUTRAL;
+			// return FIELD_STATUS.CHANCE_CARD;
+			// return FIELD_STATUS.CHEST_CARD;
+			
+		}
+		// If it's not a plain Field, it must be an instance of PurchasableField
+		else if (field instanceof PurchasableField) {
+			IPlayer owner = ((PurchasableField) field).getOwner();
+			if (owner == null) {
+				return FIELD_STATUS.BANK_OWNED;
+			} else {
+				// Relative status to a Player
+				return owner.getName().equals(playerName) ? FIELD_STATUS.SELF_OWNED : FIELD_STATUS.PLAYER_OWNED;
+			}
+		} else {
+			throw new InternalError();
+		}
+	}
+	
+	/**
+	 * Gets the status for a Field by it's index
+	 * The status is relative to a Player
+	 * @param playerName
+	 * @param index
+	 * @return
+	 */
+	public FIELD_STATUS getStatusForField(String playerName, int index) {
+		return getStatusForField(playerName, getFieldNameForIndex(index));
+	};
+	
+	/**
 	 * Gets a random chance Card from the deck.
 	 * Also performs the modifications on the Player object
 	 * Note: After this method there is a chance that the Player's money
