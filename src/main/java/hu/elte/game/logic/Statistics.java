@@ -2,6 +2,8 @@ package hu.elte.game.logic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 public class Statistics {
 	
@@ -115,6 +117,23 @@ public class Statistics {
 		checkPS(to);
 		statistic = new Statistic(Key.INCOME, from, message, Integer.toString(value));
 		this.playerStatistics.get(to).add(statistic);
+	}
+	
+	/**
+	 * Gets the total income for the specified field name
+	 * @param fieldName
+	 * @return
+	 */
+	public int getIncomeForField(String fieldName) {
+		if (!this.fieldStatistics.containsKey(fieldName)) {
+			return 0;
+		}
+		
+		Stream<Statistic> fieldStream = this.fieldStatistics.get(fieldName).stream();
+		Stream<Integer> incomeStream = fieldStream.map(field -> Integer.parseInt(field.getValue()));
+		
+		Optional<Integer> sum = incomeStream.reduce((a, b) -> a + b);
+		return sum.isPresent() ? sum.get() : 0;
 	}
 	
 	/**
