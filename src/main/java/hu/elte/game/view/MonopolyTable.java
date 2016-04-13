@@ -84,7 +84,7 @@ public class MonopolyTable extends JPanel {
         // center picture
         Field centerField = new Field("Picture", ImageIO.read(new File("./src/main/java/resources/img/Monopoly_pack_logo.png")), new Dimension(FIELDHEIGHT, FIELDHEIGHT));
         displayMonopolyImage(centerField);
-        add(centerField, "cell 1 1 9 9, grow");
+        add(centerField, "cell 1 1 " + (fields.size()/4-1) + " " + (fields.size()/4-1) +", grow");
 	}
 	   
 	private void displayHorizontalFields(int size) {
