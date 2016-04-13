@@ -3,6 +3,7 @@
  */
 package hu.elte.game.view;
 
+import java.awt.Dimension;
 import java.awt.Image;
 
 import javax.swing.GrayFilter;
@@ -23,8 +24,8 @@ public class Purchasable extends Field {
 	 * @param owner
 	 * @param price
 	 */
-	public Purchasable(String name, Image img, Player owner, int price) {
-		super(name, img);
+	public Purchasable(String name, Image img, Player owner, int price, Dimension size) {
+		super(name, img, size);
 		this.owner = owner;
 		this.price = price;
 	}

@@ -4,6 +4,7 @@
 package hu.elte.game.view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Image;
 
 /**
@@ -22,8 +23,8 @@ public class Estate extends Purchasable {
 	 * @param price
 	 * @param city
 	 */
-	public Estate(String name, Image img, Player owner, int price, Color city) {
-		super(name, img, owner, price);
+	public Estate(String name, Image img, Player owner, int price, Color city, Dimension size) {
+		super(name, img, owner, price, size);
 		this.city = city;
 		this.houseCount = 0;
 	}
