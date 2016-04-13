@@ -3,20 +3,26 @@
  */
 package hu.elte.game.view;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.Icon;
-import javax.swing.JButton;
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
 
 /**
  * @author marfoldi
  *
  */
-public class Field extends JButton {
+public class Field extends JPanel {
 	protected String name;
-	protected Icon img;
+	protected Image img;
 	protected List<Player> players;
+	protected Dimension size;
 	
 	/**
 	 * Constructor for the Start field
@@ -24,13 +30,27 @@ public class Field extends JButton {
 	 * @param img
 	 * @param players
 	 */
-	public Field(String name, Icon img, List<Player> players) {
+	public Field(String name, Image img, List<Player> players, Dimension size) {
 		super();
 		this.name = name;
 		this.img = img;
 		this.players = players;
-		this.setText(name);
-		this.setIcon(img);
+		this.size = size;
+		
+		setBorder(BorderFactory.createEtchedBorder());
+	}
+	
+	@Override 
+	protected void paintComponent(Graphics g)
+	{
+	   super.paintComponent(g);
+	   setBackground(Color.decode("#c0e2ca"));
+	   if(img != null) {
+		   Graphics2D g2d = (Graphics2D) g;
+		    int x = (this.getWidth() - img.getWidth(null)) / 2;
+		    int y = (this.getHeight() - img.getHeight(null)) / 2;
+		    g2d.drawImage(img, x, y, null);
+	   }
 	}
 	
 	/**
@@ -38,11 +58,14 @@ public class Field extends JButton {
 	 * @param name
 	 * @param img
 	 */
-	public Field(String name, Icon img) {
+	public Field(String name, Image img, Dimension size) {
 		super();
 		this.name = name;
 		this.img = img;
 		this.players = new ArrayList<>();
+		this.size = size;
+		
+		setBorder(BorderFactory.createEtchedBorder());
 	}
 	
 	/**
@@ -88,4 +111,20 @@ public class Field extends JButton {
 	public void setPlayers(List<Player> players) {
 		this.players = players;
 	}
+	
+	/**
+	 * Returns the displayed size of the field
+	 */
+	@Override
+    public Dimension getPreferredSize() {
+        return size;
+    }
+
+	/**
+	 * Probably does something important
+	 */
+    @Override
+    public Dimension getMinimumSize() {
+        return getPreferredSize();
+    }        
 }

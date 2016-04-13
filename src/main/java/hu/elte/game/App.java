@@ -1,11 +1,11 @@
 package hu.elte.game;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
-import javax.swing.UIManager;
 
 import hu.elte.game.view.Field;
 import hu.elte.game.view.MonopolyTable;
@@ -33,7 +33,7 @@ public class App
     	int FIELDSSIZE = 40;
     	List<Field> fields = new ArrayList<>();
     	for(int i=0; i<FIELDSSIZE; ++i) {
-    		fields.add(new Field("Field" + i+1, UIManager.getIcon("Tree.expandedIcon")));
+    		fields.add(new Field("Field" + i+1, null, new Dimension())); //It's empty atm...
     	}
     	return fields;
     }

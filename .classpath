@@ -15,5 +15,6 @@
 	<classpathentry kind="lib" path="src/main/java/resources/lib/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="src/main/java/resources/lib/ezmorph-1.0.6.jar"/>
 	<classpathentry kind="lib" path="src/main/java/resources/lib/json-lib-2.4.jar"/>
+	<classpathentry kind="lib" path="src/main/java/resources/lib/miglayout-3.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -3,25 +3,28 @@
  */
 package hu.elte.game.view;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.Graphics;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * @author marfoldi
  *
  */
 public class MonopolyTable extends JPanel {
-	private static final int TABLESIZE = 768;
-	private static final int FIELDWIDTH = 70;
-	private static final int FIELDHEIGHT = 70;
-	private JPanel north, south, east, west;
+	private static final Dimension TABLESIZE = new Dimension(568, 568);
+	private static final int FIELDWIDTH = 40;
+	private static final int FIELDHEIGHT = 60;
 	private List<Field> fields;
 
 	/**
@@ -30,11 +33,15 @@ public class MonopolyTable extends JPanel {
 	public MonopolyTable(List<Field> fields) {
 		super();
 		this.setFields(fields);
+
+		setLayout(new MigLayout("fill, gap 2 2"));
 		
-		this.setSize(TABLESIZE, TABLESIZE);
-		this.setLayout(new BorderLayout(0, 0));
-		
-		createFieldHolders();
+		try {
+			displayFields();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		this.setVisible(true);
 	}
@@ -55,55 +62,71 @@ public class MonopolyTable extends JPanel {
 	
 	/**
 	 * Adds JPanels (holders) for the fields
+	 * @throws IOException 
 	 */
-	private void createFieldHolders() {
-		GridLayout northSouthLayout = new GridLayout(1, 11);
-		northSouthLayout.setHgap(0);
-		northSouthLayout.setVgap(0);
-		north = new JPanel();
-		south = new JPanel();
-		north.setPreferredSize(new Dimension(TABLESIZE, FIELDHEIGHT));
-		north.setLayout(northSouthLayout);
-		north.setBorder(null);
-		south.setPreferredSize(new Dimension(TABLESIZE, FIELDHEIGHT));
-		south.setLayout(northSouthLayout);
-		south.setBorder(null);
-		
-		GridLayout eastWestLayout = new GridLayout(9, 1);
-		eastWestLayout.setHgap(0);
-		eastWestLayout.setVgap(0);
-		east = new JPanel();
-		west = new JPanel();
-		east.setPreferredSize(new Dimension(FIELDHEIGHT, TABLESIZE - 2 * FIELDWIDTH));
-		east.setLayout(eastWestLayout);
-		east.setBorder(null);
-		west.setPreferredSize(new Dimension(FIELDHEIGHT, TABLESIZE - 2 * FIELDWIDTH));
-		west.setLayout(eastWestLayout);
-		west.setBorder(null);
-	
-		addFieldsToHolders();
-		
-		this.add(north, BorderLayout.NORTH);
-		this.add(south, BorderLayout.SOUTH);
-		this.add(east, BorderLayout.EAST);
-		this.add(west, BorderLayout.WEST);
+	private void displayFields() throws IOException {
+		// top row
+        add(new Field("Start", null, new Dimension(FIELDHEIGHT, FIELDHEIGHT)));
+        displayHorizontalFields(fields.size()/4-1);
+        add(new Field("Jail", null, new Dimension(FIELDHEIGHT, FIELDHEIGHT)), "wrap");
+
+        // left column
+        displayVerticalFields(fields.size()/4-1, "wrap");
+        add(new Field("Parking", null, new Dimension(FIELDHEIGHT, FIELDHEIGHT)));
+
+        // bottom row
+        displayHorizontalFields(fields.size()/4-1);
+        add(new Field("GOTO", null, new Dimension(FIELDHEIGHT, FIELDHEIGHT)));
+
+        // right column
+        displayVerticalFields(fields.size()/4-1, "cell");
+
+        // center picture
+        Field centerField = new Field("Picture", ImageIO.read(new File("./src/main/java/resources/img/Monopoly_pack_logo.png")), new Dimension(FIELDHEIGHT, FIELDHEIGHT));
+        displayMonopolyImage(centerField);
+        add(centerField, "cell 1 1 9 9, grow");
+	}
+	   
+	private void displayHorizontalFields(int size) {
+		for(int i=0; i<size; ++i) {
+			add(new Field("Field", null, new Dimension(FIELDWIDTH, FIELDHEIGHT)));
+		}
+	}
+	   
+	private void displayVerticalFields(int size, String id) {
+		for(int i=0; i<size; ++i) {
+			if(id.equals("wrap")) { // It's the left column
+				add(new Field("Field", null, new Dimension(FIELDHEIGHT, FIELDWIDTH)), id);
+			}
+			else {
+				add(new Field("Field", null, new Dimension(FIELDHEIGHT, FIELDWIDTH)), "cell " + (size+1) + " " + (i+1));
+			}
+		}
 	}
 	
+	@Override 
+	protected void paintComponent(Graphics g)
+	{
+	   super.paintComponent(g);
+	   setBackground(Color.decode("#c0e2ca"));
+	}
+	
+	private void displayMonopolyImage(Field field) {
+		ImageIcon image = new ImageIcon("/Monopoly_pack_logo.png");
+		JLabel label = new JLabel("", image, JLabel.CENTER);
+		field.add(label);
+	}
+	
+	@Override
+    public Dimension getPreferredSize() {
+        return TABLESIZE;
+    }
+
 	/**
-	 * Adds the Fields to the holders
+	 * Probably does something important
 	 */
-	private void addFieldsToHolders() {
-		for(int i=0; i<fields.size()/4+1; ++i) {
-			north.add(fields.get(i));
-		}
-		for(int i=fields.size()/4+1; i<fields.size()/2; ++i) {
-			east.add(fields.get(i));
-		}
-		for(int i=fields.size()/2; i<fields.size()-(fields.size()/4)+1; ++i) {
-			south.add(fields.get(i));
-		}
-		for(int i=fields.size()-(fields.size()/4)+1; i<fields.size(); ++i) {
-			west.add(fields.get(i));
-		}
-	}
+    @Override
+    public Dimension getMinimumSize() {
+        return getPreferredSize();
+    }        
 }
