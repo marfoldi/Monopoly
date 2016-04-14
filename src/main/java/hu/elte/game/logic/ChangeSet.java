@@ -1,6 +1,9 @@
 package hu.elte.game.logic;
 
 import java.util.ArrayList;
+import java.util.stream.Stream;
+
+import org.javatuples.Pair;
 
 /**
  * This class represents a set of changes made in the model
@@ -62,6 +65,33 @@ public class ChangeSet {
 		this.changeSet.add(change);
 	}
 	
+	/**
+	 * Gets all the changes contained in the changeSet
+	 * @return
+	 */
+	public ArrayList<Change> getChangeSet() {
+		return this.changeSet;
+	}
+	
+	/**
+	 * Gets the changes that matches the parameters
+	 * @param actor
+	 * @param action
+	 * @return Tuple<String, String>
+	 */
+	public ArrayList<Pair<String, String>> getChangesFor(ACTOR actor, ACTION action) {
+		ArrayList<Pair<String, String>> retVal = new ArrayList<Pair<String, String>>();
+		
+		// Filter the changes according to the parameters
+		Stream<Change> changeStream = this.changeSet.stream();
+		Stream<Change> filteredStream = changeStream.filter(change -> change.getActor().equals(actor) && change.getAction().equals(action));
+		
+		// Add the filtered changes to the retVal in TUPLE format 
+		filteredStream.forEach(item -> retVal.add(new Pair<String, String>(item.getDetail(), item.getExtra())));
+		
+		return retVal;		
+	}
+	
 	public static class Change {
 		private ACTOR actor;
 		private ACTION action;
@@ -77,6 +107,22 @@ public class ChangeSet {
 		public Change (ACTOR actor, ACTION action, String detail, String extra) {
 			this(actor, action, detail);
 			this.extra = extra;
+		}
+		
+		public ACTOR getActor() {
+			return this.actor;
+		}
+		
+		public ACTION getAction() {
+			return this.action;
+		}
+		
+		public String getDetail() {
+			return this.detail;
+		}
+		
+		public String getExtra() {
+			return this.extra;
 		}
 	}
 }
