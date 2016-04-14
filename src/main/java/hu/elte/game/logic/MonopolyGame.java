@@ -7,6 +7,10 @@ import java.util.Random;
 import java.util.Stack;
 import java.util.stream.Stream;
 
+import org.javatuples.Pair;
+
+import hu.elte.game.logic.ChangeSet.ACTION;
+import hu.elte.game.logic.ChangeSet.ACTOR;
 import hu.elte.game.logic.GameRuleException.CODE;
 
 public class MonopolyGame {
@@ -69,8 +73,7 @@ public class MonopolyGame {
 
 			@Override
 			public void onGameStateChange(ChangeSet changeSet) {
-				// TODO: update properties based on the changeSet
-				// we are only  interested in the changes with ACTOR = FIELD now
+				updateWithChangeSet(changeSet);
 				return;
 				
 			}
@@ -613,5 +616,109 @@ public class MonopolyGame {
 			LandField landField = (LandField) iField;
 			return (landField.getOwner() != null) && (landField.getOwner().getName().equals(playerName));
 		});
+	}
+	
+	/**
+	 * Updates the model properties with the changes in the parameter
+	 * @param changeSet
+	 */
+	private void updateWithChangeSet(ChangeSet changeSet) {
+		// we are only interested in the changes with ACTOR = FIELD now
+		// *  FIELD:
+		// *  - action can be: OWNER, HOUSE, MORTGAGE
+		
+		// # OWNER
+		ArrayList<Pair<String, String>> ownerChanges = changeSet.getChangesFor(ACTOR.FIELD, ACTION.OWNER);
+		for (Pair<String, String> change : ownerChanges) {
+			String owner = change.getValue0();
+			String estate = change.getValue1();
+			
+			// Check if the new owner is the bank (null), or it is a valid player
+			Player player = owner == null ? null : getPlayerForName(owner);
+			if (owner != null && player == null) {
+				// TODO: error handling
+				return;
+			}
+			
+			// Check if the field exists
+			IField field = getFieldForName(estate);
+			if (field == null) {
+				// TODO: error handling
+				return;
+			}
+			
+			// Check if it is a PurchasableField (van also be LandField)
+			if (!(field instanceof PurchasableField)) {
+				// TODO: error handling
+				return;
+			}
+			PurchasableField purchasableField = (PurchasableField) field;
+			
+			// Set the new owner
+			purchasableField.setOwner(player);
+		}
+		
+		// # HOUSE
+		ArrayList<Pair<String, String>> houseChanges = changeSet.getChangesFor(ACTOR.FIELD, ACTION.HOUSE);
+		for (Pair<String, String> change : houseChanges) {
+			String estate = change.getValue0();
+			int diff = Integer.parseInt(change.getValue1());
+			
+			// Check if the field exists
+			IField field = getFieldForName(estate);
+			if (field == null) {
+				// TODO: error handling
+				return;
+			}
+						
+			// Check if it is a LandField
+			if (!(field.getClass().equals(LandField.class))) {
+				// TODO: error handling
+				return;
+			}
+			LandField landField = (LandField) field;
+			
+			// Build / Sell houses
+			// If the diff is < 0, we need to sell 'diff' amount of houses
+			if (diff < 0) {
+				for (int i = diff; i != 0; i++) {
+					landField.sellHouse();
+				}
+			}
+			// If the diff is > 0, we need to build 'diff' amount of houses
+			else if (diff > 0) {
+				for (int i = diff; i != 0; i--) {
+					landField.buildHouse();
+				}
+			} else {
+				// This should never happen
+				return;
+			}
+		}
+		
+		// # MORTGAGE
+		ArrayList<Pair<String, String>> mortgageChanges = changeSet.getChangesFor(ACTOR.FIELD, ACTION.MORTGAGE);
+		for (Pair<String, String> change : mortgageChanges) {
+			String estate = change.getValue0();
+			boolean isUnderMortgage = Boolean.parseBoolean(change.getValue1());
+			
+			// Check if the field exists
+			IField field = getFieldForName(estate);
+			if (field == null) {
+				// TODO: error handling
+				return;
+			}
+			
+			// Check if it is a PurchasableField (van also be LandField)
+			if (!(field instanceof PurchasableField)) {
+				// TODO: error handling
+				return;
+			}
+			PurchasableField purchasableField = (PurchasableField) field;
+			
+			// Set the new mortgage value
+			purchasableField.setMortgage(isUnderMortgage);
+		}
+		
 	}
 }
