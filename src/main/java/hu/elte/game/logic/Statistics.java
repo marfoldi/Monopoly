@@ -172,6 +172,23 @@ public class Statistics {
 	}
 	
 	/**
+	 * Logs a card action
+	 * @param player
+	 * @param id
+	 */
+	public void card(String player, String id) {
+		Statistic statistic;
+		
+		// Log the player's CARD action
+		checkPS(player);
+		statistic = new Statistic(Key.CARD, id);
+		this.playerStatistics.get(player).add(statistic);
+		
+		// Update the changeSet
+		this.changes.add(new ChangeSet.Change(ACTOR.PLAYER, ACTION.CARD, id));
+	}
+	
+	/**
 	 * Logs a transaction between two Players
 	 * (in special case one of the Player can be null thus indicating that is the BANK)
 	 * @param from
