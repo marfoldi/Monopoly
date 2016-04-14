@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import hu.elte.game.logic.ChangeSet.ACTION;
+import hu.elte.game.logic.ChangeSet.ACTOR;
+
 public class Statistics {
 	
 	public enum Key {
@@ -14,9 +17,12 @@ public class Statistics {
 	private HashMap<String, ArrayList<Statistic>> playerStatistics;
 	private HashMap<String, ArrayList<Statistic>> fieldStatistics;
 	
+	private ArrayList<ChangeSet.Change> changes;
+	
 	public Statistics() {
 		this.playerStatistics = new HashMap<String, ArrayList<Statistic>>();
 		this.fieldStatistics = new HashMap<String, ArrayList<Statistic>>();
+		this.changes = new ArrayList<ChangeSet.Change>();
 	}
 	
 	/**
@@ -44,6 +50,11 @@ public class Statistics {
 		// Reset the field's action history
 		checkFS(estate);
 		this.fieldStatistics.get(estate).clear();
+		
+		// Update the changeSet
+		this.changes.add(new ChangeSet.Change(ACTOR.FIELD, ACTION.OWNER, newOwner, estate));
+		this.changes.add(new ChangeSet.Change(ACTOR.PLAYER, ACTION.MONEY, newOwner, Integer.toString(value * -1)));
+		this.changes.add(new ChangeSet.Change(ACTOR.PLAYER, ACTION.MONEY, oldOwner, Integer.toString(value)));
 	}
 	
 	/**
@@ -70,6 +81,10 @@ public class Statistics {
 		checkFS(estate);
 		statistic = new Statistic(Key.INCOME, guest, Integer.toString(value));
 		this.fieldStatistics.get(estate).add(statistic);
+		
+		// Update the changeSet
+		this.changes.add(new ChangeSet.Change(ACTOR.PLAYER, ACTION.MONEY, guest, Integer.toString(value * -1)));
+		this.changes.add(new ChangeSet.Change(ACTOR.PLAYER, ACTION.MONEY, owner, Integer.toString(value)));
 	}
 	
 	/**
@@ -95,6 +110,9 @@ public class Statistics {
 		checkFS(estate);
 		statistic = new Statistic(Key.MORTGAGE, owner, Boolean.toString(isUnderMortgage));
 		this.fieldStatistics.get(estate).add(statistic);
+		
+		// Update the changeSet
+		this.changes.add(new ChangeSet.Change(ACTOR.FIELD, ACTION.MORTGAGE, estate, Boolean.toString(isUnderMortgage)));
 	}
 	
 	/**
@@ -117,6 +135,10 @@ public class Statistics {
 		checkPS(to);
 		statistic = new Statistic(Key.INCOME, from, message, Integer.toString(value));
 		this.playerStatistics.get(to).add(statistic);
+		
+		// Update the changeSet
+		this.changes.add(new ChangeSet.Change(ACTOR.PLAYER, ACTION.MONEY, from, Integer.toString(value * -1)));
+		this.changes.add(new ChangeSet.Change(ACTOR.PLAYER, ACTION.MONEY, to, Integer.toString(value)));
 	}
 	
 	/**
@@ -134,6 +156,24 @@ public class Statistics {
 		
 		Optional<Integer> sum = incomeStream.reduce((a, b) -> a + b);
 		return sum.isPresent() ? sum.get() : 0;
+	}
+	
+	/**
+	 * Clears the current ChangeSet
+	 */
+	public void checkpoint() {
+		this.changes.clear();
+	}
+	
+	/**
+	 * Gets all changes between two checkpoints
+	 * @return
+	 */
+	public ChangeSet getChangeSet() {
+		ChangeSet retVal = new ChangeSet();
+		this.changes.stream().forEach(change -> retVal.add(change));
+		
+		return retVal;
 	}
 	
 	/**
