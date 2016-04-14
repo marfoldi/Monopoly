@@ -38,7 +38,7 @@ public class MonopolyGame {
 		SELF_OWNED, PLAYER_OWNED, BANK_OWNED, NEUTRAL, CHANCE_CARD, CHEST_CARD, JAIL
 	}
 	
-	public MonopolyGame(ArrayList<IField> table, ArrayList<Player> players, ArrayList<Card> chanceCards, ArrayList<Card> chestCards) {
+	public MonopolyGame(ArrayList<IField> table, ArrayList<Player> players, ArrayList<Card> chanceCards, ArrayList<Card> chestCards, IFlowController flowController) {
 		this.table = table;
 		this.players = players;
 		this.chanceCards = chanceCards;
@@ -53,6 +53,26 @@ public class MonopolyGame {
 		// Fill up the card stacks with the shuffled decks
 		this.chanceCardsStack.addAll(this.chanceCards);
 		this.chestCardsStack.addAll(this.chestCards);
+		
+		flowController.setModelListener(new IFlowControllerListener() {
+
+			@Override
+			public void onCurrentPlayerChange(String playerName) {
+				// The model does not care about the current player,
+				// it is the FlowController's and Controller's business
+				return;
+				
+			}
+
+			@Override
+			public void onGameStateChange(ChangeSet changeSet) {
+				// TODO: update properties based on the changeSet
+				// we are only  interested in the changes with ACTOR = FIELD now
+				return;
+				
+			}
+			
+		});
 		
 	}
 	
