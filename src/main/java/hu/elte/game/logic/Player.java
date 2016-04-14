@@ -1,16 +1,14 @@
 package hu.elte.game.logic;
 
-public class Player implements IPlayer {
-	private final int START_MONEY = 70000;
-	
+public class Player implements IPlayer {	
 	private String name;
 	private int position;
 	private int money;
 	
-	public Player(String name) {
+	public Player(String name, int startMoney) {
 		this.name = name;
 		this.position = 0;
-		this.money = START_MONEY;
+		this.money = startMoney;
 	}
 	
 	@Override
@@ -18,6 +16,7 @@ public class Player implements IPlayer {
 		return this.name;
 	}
 	
+	@Override
 	public int getPosition() {
 		return this.position;
 	}
