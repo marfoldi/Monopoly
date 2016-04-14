@@ -1,8 +1,9 @@
-package hu.elte.game.logic;
+package hu.elte.game.logic.parsers;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import hu.elte.game.logic.data.Card;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 

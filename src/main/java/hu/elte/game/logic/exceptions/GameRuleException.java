@@ -1,4 +1,4 @@
-package hu.elte.game.logic;
+package hu.elte.game.logic.exceptions;
 
 public class GameRuleException extends Exception {
 	private static final long serialVersionUID = 1L;

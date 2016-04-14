@@ -1,6 +1,8 @@
-package hu.elte.game.logic;
+package hu.elte.game.logic.interfaces;
 
 import java.util.List;
+
+import hu.elte.game.logic.ChangeSet;
 
 /**
  * An implementation of this interface must be able to handle the turn based player switch analogy,

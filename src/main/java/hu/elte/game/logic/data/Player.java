@@ -1,4 +1,7 @@
-package hu.elte.game.logic;
+package hu.elte.game.logic.data;
+
+import hu.elte.game.logic.exceptions.GameRuleException;
+import hu.elte.game.logic.interfaces.IPlayer;
 
 public class Player implements IPlayer {	
 	private String name;

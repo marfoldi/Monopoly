@@ -1,4 +1,6 @@
-package hu.elte.game.logic;
+package hu.elte.game.logic.data;
+
+import hu.elte.game.logic.interfaces.IField;
 
 public class Field implements IField {
 	private String name;

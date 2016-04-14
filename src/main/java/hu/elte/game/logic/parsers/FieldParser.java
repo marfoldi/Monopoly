@@ -1,8 +1,12 @@
-package hu.elte.game.logic;
+package hu.elte.game.logic.parsers;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import hu.elte.game.logic.data.Field;
+import hu.elte.game.logic.data.LandField;
+import hu.elte.game.logic.data.PurchasableField;
+import hu.elte.game.logic.interfaces.IField;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 

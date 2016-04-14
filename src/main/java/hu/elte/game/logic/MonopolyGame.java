@@ -11,7 +11,20 @@ import org.javatuples.Pair;
 
 import hu.elte.game.logic.ChangeSet.ACTION;
 import hu.elte.game.logic.ChangeSet.ACTOR;
-import hu.elte.game.logic.GameRuleException.CODE;
+import hu.elte.game.logic.data.Card;
+import hu.elte.game.logic.data.Dice;
+import hu.elte.game.logic.data.Field;
+import hu.elte.game.logic.data.LandField;
+import hu.elte.game.logic.data.Player;
+import hu.elte.game.logic.data.PurchasableField;
+import hu.elte.game.logic.exceptions.GameRuleException;
+import hu.elte.game.logic.exceptions.InvalidFieldException;
+import hu.elte.game.logic.exceptions.GameRuleException.CODE;
+import hu.elte.game.logic.interfaces.IDice;
+import hu.elte.game.logic.interfaces.IField;
+import hu.elte.game.logic.interfaces.IFlowController;
+import hu.elte.game.logic.interfaces.IFlowControllerListener;
+import hu.elte.game.logic.interfaces.IPlayer;
 
 public class MonopolyGame {
 	private final int FINISH_AWARD = 20000;

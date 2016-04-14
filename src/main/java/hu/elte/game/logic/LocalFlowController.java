@@ -2,6 +2,9 @@ package hu.elte.game.logic;
 
 import java.util.List;
 
+import hu.elte.game.logic.interfaces.IFlowController;
+import hu.elte.game.logic.interfaces.IFlowControllerListener;
+
 /**
  * This controller is able to handle the turn based player switch analogy on a single computer
  * That means more than one player use the same computer, there is no network communication needed

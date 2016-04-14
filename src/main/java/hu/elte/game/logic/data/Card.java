@@ -1,4 +1,4 @@
-package hu.elte.game.logic;
+package hu.elte.game.logic.data;
 
 public class Card {
 	private Integer money;

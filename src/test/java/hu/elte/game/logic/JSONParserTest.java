@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import hu.elte.game.logic.parsers.JSONParser;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 

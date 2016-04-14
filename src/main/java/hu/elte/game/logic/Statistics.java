@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 
 import hu.elte.game.logic.ChangeSet.ACTION;
 import hu.elte.game.logic.ChangeSet.ACTOR;
+import hu.elte.game.logic.interfaces.IDice;
 
 public class Statistics {
 	

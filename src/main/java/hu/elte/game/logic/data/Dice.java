@@ -1,7 +1,9 @@
-package hu.elte.game.logic;
+package hu.elte.game.logic.data;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import hu.elte.game.logic.interfaces.IDice;
 
 public class Dice implements IDice {
 

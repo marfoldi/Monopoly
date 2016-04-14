@@ -1,4 +1,4 @@
-package hu.elte.game.logic;
+package hu.elte.game.logic.parsers;
 
 import java.io.InputStream;
 import java.util.ArrayList;

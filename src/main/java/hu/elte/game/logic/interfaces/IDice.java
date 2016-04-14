@@ -1,4 +1,4 @@
-package hu.elte.game.logic;
+package hu.elte.game.logic.interfaces;
 
 import java.util.List;
 

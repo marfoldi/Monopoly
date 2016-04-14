@@ -1,4 +1,6 @@
-package hu.elte.game.logic;
+package hu.elte.game.logic.interfaces;
+
+import hu.elte.game.logic.ChangeSet;
 
 /**
  * Listener used in the IFlowController
