@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 import hu.elte.game.logic.GameRuleException.CODE;
 
 public class MonopolyGame {
-	private final int START_MONEY = 70000;
+	private final int FINISH_AWARD = 20000;
 	
 	private ArrayList<IField> table;
 	private ArrayList<Player> players;
@@ -443,9 +443,27 @@ public class MonopolyGame {
 	 * @param player
 	 * @param dice
 	 */
-	public void advancePlayerWithDice(Player player, IDice dice) {
+	public void advancePlayerWithDice(String playerName, IDice dice) {
+		
+		// Get the Player with the name 'playerName'
+		Player player = getPlayerForName(playerName);
+		if (player == null) {
+			throw new IllegalArgumentException("Player not found: " + playerName);
+		}
+		 
 		int newPosition = (player.getPosition() + dice.getSum()) % this.table.size();
 		player.setPosition(newPosition);
+		
+		// Check if the Player has crossed the finish line
+		if (newPosition < dice.getSum()) {
+			try {
+				player.doTransaction(FINISH_AWARD);
+			}
+			catch (GameRuleException e) {
+				// Should never fail
+				throw new RuntimeException("Internal error");
+			}
+		}
 	}
 	
 	/**
