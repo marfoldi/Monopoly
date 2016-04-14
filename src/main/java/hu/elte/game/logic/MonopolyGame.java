@@ -21,6 +21,8 @@ public class MonopolyGame {
 	private ArrayList<Card> chestCards;
 	private Stack<Card> chestCardsStack;
 	
+	private Statistics log;
+	
 	/**
 	 * Set of statuses for the fields
 	 * The model can choose an action for players based on this
@@ -45,6 +47,7 @@ public class MonopolyGame {
 		this.chestCards = chestCards;
 		this.chanceCardsStack = new Stack<Card>();
 		this.chestCardsStack = new Stack<Card>();
+		this.log = new Statistics();
 		
 		// Shuffle the cards
 		Collections.shuffle(this.chanceCards);
@@ -157,6 +160,11 @@ public class MonopolyGame {
 		}
 		
 		Card card = this.chanceCardsStack.pop();
+		// Log the card action
+		// Note: this also adds this to the changeSet
+		// TODO: implement card.getId()
+		log.card(playerName, "card-id");
+				
 		int money = card.getMoney();
 		if (money != 0) {
 			// The Player's money can be negative after this action
@@ -191,11 +199,22 @@ public class MonopolyGame {
 		}
 		
 		Card card = this.chestCardsStack.pop();
+		// Log the card action
+		// Note: this also adds this to the changeSet
+		// TODO: implement card.getId()
+		log.card(playerName, "card-id");
+		
 		int money = card.getMoney();
 		if (money != 0) {
 			// The Player's money can be negative after this action
 			// so we use the manual setMoney method that does not throw error
 			player.setMoney(player.getMoney() + money);
+			
+			// Log the transaction
+			// Note: this also adds this to the changeSet
+			String from = money < 0 ? playerName : null;
+			String to = money < 0 ? null : playerName; 
+			log.transaction(from, to, card.getText(), money);
 		}
 		
 		return card;
@@ -247,6 +266,10 @@ public class MonopolyGame {
 		// Note: doTransaction throws error if the Player does not have enough money
 		player.doTransaction(landField.getHousePrice() * -1);
 		landField.buildHouse();
+		
+		// Log the +1 house build action
+		// Note: this also adds this to the change set
+		log.houseChange(fieldName, 1);
 	}
 
 	/**
@@ -297,6 +320,10 @@ public class MonopolyGame {
 		// houseValue is always positive, so the doTransaction won't fail
 		int houseValue = landField.getHousePrice() / 2;
 		player.doTransaction(houseValue);
+		
+		// Log the -1 house sell action
+		// Note: this also adds this to the change set
+		log.houseChange(fieldName, -1);
 	}
 	
 	/**
@@ -339,6 +366,10 @@ public class MonopolyGame {
 		// Note: doTransaction throws error if the Player does not have enough money
 		player.doTransaction(purchasableField.getPrice() * -1);
 		purchasableField.setOwner(player);
+		
+		// Log the estate buy action
+		// Note: this also adds this to the change set
+		log.estateOwnerChange(null, playerName, fieldName, purchasableField.getPrice());
 	}
 	
 	/**
@@ -381,6 +412,10 @@ public class MonopolyGame {
 		int estateValue = purchasableField.getPrice() / 2;
 		player.doTransaction(estateValue);
 		purchasableField.setOwner(null);
+		
+		// Log the estate sell action
+		// Note: this also adds this to the change set
+		log.estateOwnerChange(playerName, null, fieldName, estateValue);
 	}
 
 	/**
@@ -443,18 +478,34 @@ public class MonopolyGame {
 			player.doTransaction(mortgageValue * -1);
 			purchasableField.setMortgage(false);
 		}
+		
+		// Log the estate mortgage action
+		// Note: this also adds this to the change set
+		log.mortgageSet(playerName, fieldName, isUnderMortgage, mortgageValue);
 	}
 	
 	/**
 	 * Rolls the dice (2 dices)
 	 * @return
 	 */
-	public Dice rollDice() {
+	public Dice rollDice(String playerName) {
+		
+		// Get the Player with the name 'playerName'
+		Player player = getPlayerForName(playerName);
+		if (player == null) {
+			throw new IllegalArgumentException("Player not found: " + playerName);
+		}
+		
 		Random rand = new Random();
 		int first = rand.nextInt(6) + 1;
 		int second = rand.nextInt(6) + 1;
+		Dice dice = new Dice(first, second);
 		
-		return new Dice(first, second);
+		// Log the roll action
+		// Note: this also adds this to the change set
+		log.rollDice(playerName, dice);
+		
+		return dice;
 	}
 	
 	/**
@@ -484,6 +535,10 @@ public class MonopolyGame {
 				throw new RuntimeException("Internal error");
 			}
 		}
+		
+		// Log the position change action
+		// Note: this also adds this to the change set
+		log.positionChange(playerName, newPosition);
 	}
 	
 	/**
