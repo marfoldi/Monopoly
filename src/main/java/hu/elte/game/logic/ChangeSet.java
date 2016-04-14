@@ -21,13 +21,16 @@ public class ChangeSet {
 	 *  - extra is     : the amount of change (integer)
 	 *  
 	 *  FIELD:
-	 *  - action can be: OWNER, MORTGAGE
+	 *  - action can be: OWNER, HOUSE, MORTGAGE
 	 *  #OWNER
 	 *  - detail is    : the new owner's name (string)
 	 *  - extra is     : the estate's name (string)
 	 *  #MORTGAGE
 	 *  - detail is    : the estate's name (string)
 	 *  - extra is     : (boolean)
+	 *  #HOUSE
+	 *  - detail is    : the estate's name (string)
+	 *  - extra is     : unit change (integer) ideally +1 / -1
 	 *  
 	 *  SYSTEM:
 	 *  - action can be: ROLL, CARD
@@ -42,7 +45,7 @@ public class ChangeSet {
 	}
 	
 	public enum ACTION {
-		ROLL, MONEY, OWNER, CARD, MORTGAGE
+		ROLL, MONEY, OWNER, CARD, MORTGAGE, HOUSE
 	}
 	
 	public ChangeSet() {

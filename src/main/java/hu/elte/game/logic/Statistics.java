@@ -11,7 +11,7 @@ import hu.elte.game.logic.ChangeSet.ACTOR;
 public class Statistics {
 	
 	public enum Key {
-		RENT, PURCHASE, PAYMENT, SALE, INCOME, MORTGAGE, CARD
+		RENT, PURCHASE, PAYMENT, SALE, INCOME, MORTGAGE, CARD, HOUSE
 	}
 	
 	private HashMap<String, ArrayList<Statistic>> playerStatistics;
@@ -113,6 +113,23 @@ public class Statistics {
 		
 		// Update the changeSet
 		this.changes.add(new ChangeSet.Change(ACTOR.FIELD, ACTION.MORTGAGE, estate, Boolean.toString(isUnderMortgage)));
+	}
+	
+	/**
+	 * Logs a field's house count property change
+	 * @param estate
+	 * @param diff
+	 */
+	public void houseChange(String estate, int diff) {
+		Statistic statistic;
+		
+		// Log the field's HOUSE action
+		checkFS(estate);
+		statistic = new Statistic(Key.HOUSE, estate, Integer.toString(diff));
+		this.fieldStatistics.get(estate).add(statistic);
+		
+		// Update the changeSet
+		this.changes.add(new ChangeSet.Change(ACTOR.FIELD, ACTION.HOUSE, estate, Integer.toString(diff)));
 	}
 	
 	/**
