@@ -13,7 +13,7 @@ import hu.elte.game.logic.ChangeSet.ACTOR;
 public class Statistics {
 	
 	public enum Key {
-		RENT, PURCHASE, PAYMENT, SALE, INCOME, MORTGAGE, CARD, HOUSE, ROLL
+		RENT, PURCHASE, PAYMENT, SALE, INCOME, MORTGAGE, CARD, HOUSE, ROLL, STEP
 	}
 	
 	private HashMap<String, ArrayList<Statistic>> playerStatistics;
@@ -134,6 +134,11 @@ public class Statistics {
 		this.changes.add(new ChangeSet.Change(ACTOR.FIELD, ACTION.HOUSE, estate, Integer.toString(diff)));
 	}
 	
+	/**
+	 * Logs a dice roll action
+	 * @param player
+	 * @param dice
+	 */
 	public void rollDice(String player, IDice dice) {
 		Statistic statistic;
 		
@@ -147,6 +152,23 @@ public class Statistics {
 		
 		// Update the changeSet
 		this.changes.add(new ChangeSet.Change(ACTOR.SYSTEM, ACTION.ROLL, formattedDice));
+	}
+	
+	/**
+	 * Logs a position change action
+	 * @param player
+	 * @param position
+	 */
+	public void positionChange(String player, int position) {
+		Statistic statistic;
+		
+		// Log the player's STEP action
+		checkPS(player);
+		statistic = new Statistic(Key.STEP, Integer.toString(position));
+		this.playerStatistics.get(player).add(statistic);
+		
+		// Update the changeSet
+		this.changes.add(new ChangeSet.Change(ACTOR.PLAYER, ACTION.STEP, Integer.toString(position)));
 	}
 	
 	/**

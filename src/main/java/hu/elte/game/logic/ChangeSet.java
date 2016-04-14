@@ -15,10 +15,12 @@ public class ChangeSet {
 	 * This enumeration determines the structure of the data it contains
 	 * 
 	 * PLAYER:
-	 *  - action can be: MONEY
+	 *  - action can be: MONEY, STEP
 	 *  #MONEY
 	 *  - detail is    : the name of the Player (string)
 	 *  - extra is     : the amount of change (integer)
+	 *  #STEP
+	 *  - detail is    : the player's new position on the table (integer)
 	 *  
 	 *  FIELD:
 	 *  - action can be: OWNER, HOUSE, MORTGAGE
@@ -45,7 +47,7 @@ public class ChangeSet {
 	}
 	
 	public enum ACTION {
-		ROLL, MONEY, OWNER, CARD, MORTGAGE, HOUSE
+		ROLL, MONEY, OWNER, CARD, MORTGAGE, HOUSE, STEP
 	}
 	
 	public ChangeSet() {
