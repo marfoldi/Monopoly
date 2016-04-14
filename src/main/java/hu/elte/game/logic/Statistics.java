@@ -5,13 +5,15 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang.StringUtils;
+
 import hu.elte.game.logic.ChangeSet.ACTION;
 import hu.elte.game.logic.ChangeSet.ACTOR;
 
 public class Statistics {
 	
 	public enum Key {
-		RENT, PURCHASE, PAYMENT, SALE, INCOME, MORTGAGE, CARD, HOUSE
+		RENT, PURCHASE, PAYMENT, SALE, INCOME, MORTGAGE, CARD, HOUSE, ROLL
 	}
 	
 	private HashMap<String, ArrayList<Statistic>> playerStatistics;
@@ -125,11 +127,26 @@ public class Statistics {
 		
 		// Log the field's HOUSE action
 		checkFS(estate);
-		statistic = new Statistic(Key.HOUSE, estate, Integer.toString(diff));
+		statistic = new Statistic(Key.HOUSE, Integer.toString(diff));
 		this.fieldStatistics.get(estate).add(statistic);
 		
 		// Update the changeSet
 		this.changes.add(new ChangeSet.Change(ACTOR.FIELD, ACTION.HOUSE, estate, Integer.toString(diff)));
+	}
+	
+	public void rollDice(String player, IDice dice) {
+		Statistic statistic;
+		
+		// Get the comma separated numbers from dice
+		String formattedDice = StringUtils.join(dice.getValues(), ",");
+		
+		// Log the player's ROLL action
+		checkPS(player);
+		statistic = new Statistic(Key.ROLL, formattedDice);
+		this.playerStatistics.get(player).add(statistic);
+		
+		// Update the changeSet
+		this.changes.add(new ChangeSet.Change(ACTOR.SYSTEM, ACTION.ROLL, formattedDice));
 	}
 	
 	/**
