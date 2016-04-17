@@ -2,22 +2,20 @@ package hu.elte.game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import hu.elte.game.logic.ChangeSet;
 import hu.elte.game.logic.MonopolyGame;
-import hu.elte.game.logic.MonopolyGame.FIELD_STATUS;
 import hu.elte.game.logic.data.Card;
 import hu.elte.game.logic.data.Player;
-import hu.elte.game.logic.interfaces.IDice;
 import hu.elte.game.logic.interfaces.IField;
 import hu.elte.game.logic.interfaces.IFlowController;
 import hu.elte.game.logic.interfaces.IFlowControllerListener;
-import hu.elte.game.logic.interfaces.IPlayer;
 import hu.elte.game.logic.parsers.CardParser;
 import hu.elte.game.logic.parsers.FieldParser;
 import hu.elte.game.logic.parsers.JSONParser;
+import hu.elte.game.view.Field;
 import hu.elte.game.logic.LocalFlowController;
-import hu.elte.game.logic.Statistics;
 import net.sf.json.JSONArray;
 
 public class Controller {
@@ -72,6 +70,16 @@ public class Controller {
 		// Create the game
 		this.game = new MonopolyGame(fields, players, chanceCards, chestCards, this.flowController);
 		
+	}
+	
+	/**
+	 * @return the table
+	 */
+	public List<hu.elte.game.view.Field> getTableAsUITable() {
+		List<hu.elte.game.view.Field> uiFields = new ArrayList<>();
+		Stream<IField> fieldStream = game.getTable().stream();
+		fieldStream.forEach(field -> uiFields.add(new Field(field.getName(), null, null)));
+		return uiFields;
 	}
 
 	private void startPlayerFlow() {

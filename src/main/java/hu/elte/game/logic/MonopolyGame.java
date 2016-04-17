@@ -734,4 +734,11 @@ public class MonopolyGame {
 		}
 		
 	}
+
+	/**
+	 * @return the table
+	 */
+	public ArrayList<IField> getTable() {
+		return table;
+	}
 }

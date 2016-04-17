@@ -117,7 +117,7 @@ public class MonopolyTable extends JPanel {
 		field.add(label);
 	}
 	
-	private Dimension getPreferedFieldSize() {
+	public Dimension getPreferedFieldSize() {
 		Dimension tableSize = this.getPreferredSize();
 		return new Dimension((int) (tableSize.width*0.075), (int) (tableSize.height*0.125));
 	}
