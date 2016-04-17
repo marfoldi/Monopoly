@@ -6,6 +6,8 @@ package hu.elte.game.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -22,9 +24,7 @@ import net.miginfocom.swing.MigLayout;
  *
  */
 public class MonopolyTable extends JPanel {
-	private static final Dimension TABLESIZE = new Dimension(568, 568);
-	private static final int FIELDWIDTH = 40;
-	private static final int FIELDHEIGHT = 60;
+	private final Dimension FIELDSIZE = getPreferedFieldSize();
 	private List<Field> fields;
 
 	/**
@@ -66,40 +66,40 @@ public class MonopolyTable extends JPanel {
 	 */
 	private void displayFields() throws IOException {
 		// top row
-        add(new Field("Start", null, new Dimension(FIELDHEIGHT, FIELDHEIGHT)));
+        add(new Field("Start", null, new Dimension(FIELDSIZE.height, FIELDSIZE.height)));
         displayHorizontalFields(fields.size()/4-1);
-        add(new Field("Jail", null, new Dimension(FIELDHEIGHT, FIELDHEIGHT)), "wrap");
+        add(new Field("Jail", null, new Dimension(FIELDSIZE.height, FIELDSIZE.height)), "wrap");
 
         // left column
         displayVerticalFields(fields.size()/4-1, "wrap");
-        add(new Field("Parking", null, new Dimension(FIELDHEIGHT, FIELDHEIGHT)));
+        add(new Field("Parking", null, new Dimension(FIELDSIZE.height, FIELDSIZE.height)));
 
         // bottom row
         displayHorizontalFields(fields.size()/4-1);
-        add(new Field("GOTO", null, new Dimension(FIELDHEIGHT, FIELDHEIGHT)));
+        add(new Field("GOTO", null, new Dimension(FIELDSIZE.height, FIELDSIZE.height)));
 
         // right column
         displayVerticalFields(fields.size()/4-1, "cell");
 
         // center picture
-        Field centerField = new Field("Picture", ImageIO.read(new File("./src/main/java/resources/img/Monopoly_pack_logo.png")), new Dimension(FIELDHEIGHT, FIELDHEIGHT));
+        Field centerField = new Field("Picture", ImageIO.read(new File("./src/main/java/resources/img/Monopoly_pack_logo.png")), new Dimension(FIELDSIZE.height, FIELDSIZE.height));
         displayMonopolyImage(centerField);
         add(centerField, "cell 1 1 " + (fields.size()/4-1) + " " + (fields.size()/4-1) +", grow");
 	}
 	   
 	private void displayHorizontalFields(int size) {
 		for(int i=0; i<size; ++i) {
-			add(new Field("Field", null, new Dimension(FIELDWIDTH, FIELDHEIGHT)));
+			add(new Field("Field", null, new Dimension(FIELDSIZE.width, FIELDSIZE.height)));
 		}
 	}
 	   
 	private void displayVerticalFields(int size, String id) {
 		for(int i=0; i<size; ++i) {
 			if(id.equals("wrap")) { // It's the left column
-				add(new Field("Field", null, new Dimension(FIELDHEIGHT, FIELDWIDTH)), id);
+				add(new Field("Field", null, new Dimension(FIELDSIZE.height, FIELDSIZE.width)), id);
 			}
 			else {
-				add(new Field("Field", null, new Dimension(FIELDHEIGHT, FIELDWIDTH)), "cell " + (size+1) + " " + (i+1));
+				add(new Field("Field", null, new Dimension(FIELDSIZE.height, FIELDSIZE.width)), "cell " + (size+1) + " " + (i+1));
 			}
 		}
 	}
@@ -117,9 +117,15 @@ public class MonopolyTable extends JPanel {
 		field.add(label);
 	}
 	
+	private Dimension getPreferedFieldSize() {
+		Dimension tableSize = this.getPreferredSize();
+		return new Dimension((int) (tableSize.width*0.075), (int) (tableSize.height*0.125));
+	}
+	
 	@Override
     public Dimension getPreferredSize() {
-        return TABLESIZE;
+		Rectangle screenSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();		
+		return new Dimension((int) (screenSize.getWidth()*0.50), (int) (screenSize.getHeight()*0.9));
     }
 
 	/**

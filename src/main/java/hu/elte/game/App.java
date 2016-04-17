@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.JFrame;
 
 import hu.elte.game.view.Field;
+import hu.elte.game.view.GameScreen;
 import hu.elte.game.view.MonopolyTable;
 
 /**
@@ -18,15 +19,9 @@ public class App
 {
     public static void main( String[] args )
     {
-    	JFrame frame = new JFrame();
-    	frame.setTitle("Monopoly");
-    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    	frame.setLayout(new BorderLayout(0,0));
-    	frame.add(new MonopolyTable(createDummyFields()), BorderLayout.CENTER);
-    	
-    	frame.setVisible(true);
-    	
-    	frame.pack();
+    	GameScreen gs = new GameScreen();
+    	gs.add(new MonopolyTable(createDummyFields()), BorderLayout.CENTER);
+    	gs.pack(); //Recalculate the frame size
     }
     
     private static List<Field> createDummyFields() {
