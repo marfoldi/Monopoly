@@ -11,6 +11,15 @@ import java.awt.Image;
  */
 public class Player {
 	private Image img;
+	private String name;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	/**
 	 * @param img
