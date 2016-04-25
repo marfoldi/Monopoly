@@ -42,7 +42,7 @@ public class FieldParser {
 			return new Field(name);
 		} else if ("TaxField".equals(type)) {
 			int price = field.getInt("price");
-			// TODO: return new TaxField(name, price);
+			//return new TaxField(name, price);
 		} else if ("CardField".equals(type)) {
 			String subType = field.getString("subType");
 			// TODO: return new CardField(name, subType);
