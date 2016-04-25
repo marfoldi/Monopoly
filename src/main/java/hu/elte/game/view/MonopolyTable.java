@@ -39,10 +39,10 @@ public class MonopolyTable extends JPanel {
 	 * @param fields
 	 * @param gameController 
 	 */
-	public MonopolyTable(List<Field> fields, Controller gameController) {
+	public MonopolyTable(Controller gameController) {
 		super();
 		this.gameController=gameController;
-		this.setFields(fields);
+		this.setFields(gameController.getFields());
 
 		setLayout(new MigLayout("fill, gap 2 2"));
 		
@@ -143,7 +143,7 @@ public class MonopolyTable extends JPanel {
     public Dimension getPreferredSize() {
 		Rectangle screenSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
 		double widthMultiplier = 0.85;
-		if(screenSize.getWidth()/screenSize.getHeight() == 1.6) {
+		if(screenSize.getWidth()/screenSize.getHeight() <= 1.7) {
 			widthMultiplier = 0.95;
 		}
 		return new Dimension((int) (screenSize.getWidth()*widthMultiplier), (int) (screenSize.getHeight()*0.9));

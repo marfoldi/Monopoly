@@ -25,7 +25,7 @@ public class App
     	/* TODO: GOT A NULLPTR HERE:
     	 * gameScreen.add(new MonopolyTable(gameController.getTableAsUITable()), BorderLayout.CENTER);
     	 */
-    	gameScreen.add(new MonopolyTable(gameController.getFields(),gameController), BorderLayout.CENTER);
+    	gameScreen.add(new MonopolyTable(gameController), BorderLayout.CENTER);
     	gameScreen.pack(); //Recalculate the frame size
     }
 }
