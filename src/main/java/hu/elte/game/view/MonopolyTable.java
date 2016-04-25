@@ -3,6 +3,7 @@
  */
 package hu.elte.game.view;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -14,9 +15,11 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import hu.elte.game.view.centerpanel.CenterPanel;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -82,9 +85,9 @@ public class MonopolyTable extends JPanel {
         displayVerticalFields(fields.size()/4-4, "cell");
 
         // center picture
-        Field centerField = new Field("Picture", ImageIO.read(new File("./src/main/java/resources/img/Monopoly_pack_logo.png")), new Dimension(FIELDSIZE.height, FIELDSIZE.height));
-        displayMonopolyImage(centerField);
-        add(centerField, "cell 1 1 " + (fields.size()/4+2) + " " + (fields.size()/4-4) +", grow");
+        CenterPanel centerPanel = new CenterPanel(ImageIO.read(new File("./src/main/java/resources/img/Monopoly_pack_logo.png")), new Dimension(FIELDSIZE.height, FIELDSIZE.height));
+        displayMonopolyImage(centerPanel);
+        add(centerPanel, "cell 1 1 " + (fields.size()/4+2) + " " + (fields.size()/4-4) +", grow");
 	}
 	   
 	private void displayHorizontalFields(int size) {
@@ -111,15 +114,17 @@ public class MonopolyTable extends JPanel {
 	   setBackground(Color.decode("#c0e2ca"));
 	}
 	
-	private void displayMonopolyImage(Field field) {
+	private void displayMonopolyImage(CenterPanel centerPanel) {
 		ImageIcon image = new ImageIcon("/Monopoly_pack_logo.png");
 		JLabel label = new JLabel("", image, JLabel.CENTER);
-		field.add(label);
+		centerPanel.add(label);
+		
+		centerPanel.add(new JButton("Estate manager"), BorderLayout.SOUTH);
 	}
 	
 	public Dimension getPreferedFieldSize() {
 		Dimension tableSize = this.getPreferredSize();
-		return new Dimension((int) (tableSize.width*0.065), (int) (tableSize.height*0.13));
+		return new Dimension((int) (tableSize.height*0.12), (int) (tableSize.height*0.12));
 	}
 	
 	@Override
