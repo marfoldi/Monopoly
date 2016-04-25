@@ -67,24 +67,24 @@ public class MonopolyTable extends JPanel {
 	private void displayFields() throws IOException {
 		// top row
         add(new Field("Start", null, new Dimension(FIELDSIZE.height, FIELDSIZE.height)));
-        displayHorizontalFields(fields.size()/4-1);
+        displayHorizontalFields(fields.size()/4+2);
         add(new Field("Jail", null, new Dimension(FIELDSIZE.height, FIELDSIZE.height)), "wrap");
 
         // left column
-        displayVerticalFields(fields.size()/4-1, "wrap");
+        displayVerticalFields(fields.size()/4-4, "wrap");
         add(new Field("Parking", null, new Dimension(FIELDSIZE.height, FIELDSIZE.height)));
 
         // bottom row
-        displayHorizontalFields(fields.size()/4-1);
+        displayHorizontalFields(fields.size()/4+2);
         add(new Field("GOTO", null, new Dimension(FIELDSIZE.height, FIELDSIZE.height)));
 
         // right column
-        displayVerticalFields(fields.size()/4-1, "cell");
+        displayVerticalFields(fields.size()/4-4, "cell");
 
         // center picture
         Field centerField = new Field("Picture", ImageIO.read(new File("./src/main/java/resources/img/Monopoly_pack_logo.png")), new Dimension(FIELDSIZE.height, FIELDSIZE.height));
         displayMonopolyImage(centerField);
-        add(centerField, "cell 1 1 " + (fields.size()/4-1) + " " + (fields.size()/4-1) +", grow");
+        add(centerField, "cell 1 1 " + (fields.size()/4+2) + " " + (fields.size()/4-4) +", grow");
 	}
 	   
 	private void displayHorizontalFields(int size) {
@@ -99,7 +99,7 @@ public class MonopolyTable extends JPanel {
 				add(new Field("Field", null, new Dimension(FIELDSIZE.height, FIELDSIZE.width)), id);
 			}
 			else {
-				add(new Field("Field", null, new Dimension(FIELDSIZE.height, FIELDSIZE.width)), "cell " + (size+1) + " " + (i+1));
+				add(new Field("Field", null, new Dimension(FIELDSIZE.height, FIELDSIZE.width)), "cell " + (size+7) + " " + (i+1));
 			}
 		}
 	}
@@ -119,13 +119,13 @@ public class MonopolyTable extends JPanel {
 	
 	public Dimension getPreferedFieldSize() {
 		Dimension tableSize = this.getPreferredSize();
-		return new Dimension((int) (tableSize.width*0.075), (int) (tableSize.height*0.125));
+		return new Dimension((int) (tableSize.width*0.065), (int) (tableSize.height*0.13));
 	}
 	
 	@Override
     public Dimension getPreferredSize() {
 		Rectangle screenSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();		
-		return new Dimension((int) (screenSize.getWidth()*0.50), (int) (screenSize.getHeight()*0.9));
+		return new Dimension((int) (screenSize.getWidth()*0.85), (int) (screenSize.getHeight()*0.9));
     }
 
 	/**
