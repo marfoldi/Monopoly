@@ -129,8 +129,12 @@ public class MonopolyTable extends JPanel {
 	
 	@Override
     public Dimension getPreferredSize() {
-		Rectangle screenSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();		
-		return new Dimension((int) (screenSize.getWidth()*0.85), (int) (screenSize.getHeight()*0.9));
+		Rectangle screenSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+		double widthMultiplier = 0.85;
+		if(screenSize.getWidth()/screenSize.getHeight() == 1.6) {
+			widthMultiplier = 0.95;
+		}
+		return new Dimension((int) (screenSize.getWidth()*widthMultiplier), (int) (screenSize.getHeight()*0.9));
     }
 
 	/**
