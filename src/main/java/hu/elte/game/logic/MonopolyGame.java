@@ -555,6 +555,62 @@ public class MonopolyGame {
 		// Log the position change action
 		// Note: this also adds this to the change set
 		log.positionChange(playerName, newPosition);
+		
+		// Obtain the new field by the new position
+		String newFieldName = getFieldNameForIndex(newPosition);
+		IField newField = getFieldForName(newFieldName);
+		
+		// Get the status for the new field the player is standing
+		FIELD_STATUS status = getStatusForField(playerName, newFieldName);
+		
+		switch (status) {
+			case SELF_OWNED:
+			case NEUTRAL: {
+				break;
+			}
+			case PLAYER_OWNED: {
+				PurchasableField field = (PurchasableField) newField;
+				String ownerName = field.getOwner().getName();
+				
+				// Check if it is under mortgage
+				// If so, we do not have to pay a rent fee
+				if (field.isMortgage()) {
+				
+				}
+			
+				int price;
+				// If it is LandField, get the price according the field's house count
+				if (newField.getClass().equals(LandField.class)) {
+					LandField landField = (LandField) newField;
+					price = landField.getIncomings().get(landField.getHouseCount() - 1);
+				}
+				// If it is PurchasableField, get the price according how many same fields the player has
+				else {
+					PurchasableField purchasableField = (PurchasableField) newField;
+					int numberOfEstates = (int) this.table.stream().filter(item -> {
+						if (!item.getClass().equals(PurchasableField.class)) {
+							return false;
+						}
+						PurchasableField castedItem = (PurchasableField) item;
+						return castedItem.getOwner().getName().equals(ownerName) && castedItem.getSubType().equals(purchasableField.getSubType());
+					}).count();
+					price = purchasableField.getIncomings().get(numberOfEstates - 1);
+				}
+				
+				// Decrease the player's money with the rental fee
+				player.setMoney(player.getMoney() - price);
+				
+				// Log the rental action
+				log.rentPayment(playerName, ownerName, field.getName(), price);
+				
+				break;
+			}
+			case CHEST_CARD:
+			case CHANCE_CARD: {
+				break;
+			}
+			default: throw new RuntimeException("Unhandled status case: " + status);
+		}
 	}
 	
 	/**
