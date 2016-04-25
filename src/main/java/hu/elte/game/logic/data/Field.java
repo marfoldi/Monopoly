@@ -4,9 +4,9 @@ import hu.elte.game.logic.interfaces.IField;
 
 public class Field implements IField {
 	private String name;
-
-	public Field(String fieldName) {
-		name = fieldName;
+	
+	public Field(String name) {
+		this.name = name;
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class Field implements IField {
 
 	@Override
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 }

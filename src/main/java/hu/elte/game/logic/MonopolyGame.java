@@ -529,8 +529,9 @@ public class MonopolyGame {
 	 * If the new position is greater than the Table's size, it loops over
 	 * @param player
 	 * @param dice
+	 * @return Pair
 	 */
-	public void advancePlayerWithDice(String playerName, IDice dice) {
+	public Pair<FIELD_STATUS, Object> advancePlayerWithDice(String playerName, IDice dice) {
 		
 		// Get the Player with the name 'playerName'
 		Player player = getPlayerForName(playerName);
@@ -564,6 +565,7 @@ public class MonopolyGame {
 		FIELD_STATUS status = getStatusForField(playerName, newFieldName);
 		
 		switch (status) {
+			case BANK_OWNED:
 			case SELF_OWNED:
 			case NEUTRAL: {
 				break;
@@ -592,7 +594,9 @@ public class MonopolyGame {
 							return false;
 						}
 						PurchasableField castedItem = (PurchasableField) item;
-						return castedItem.getOwner().getName().equals(ownerName) && castedItem.getSubType().equals(purchasableField.getSubType());
+						// FIX ME: missing getter: getSubType()
+						// return castedItem.getOwner().getName().equals(ownerName) && castedItem.getSubType().equals(purchasableField.getSubType());
+						return true;
 					}).count();
 					price = purchasableField.getIncomings().get(numberOfEstates - 1);
 				}
@@ -603,7 +607,7 @@ public class MonopolyGame {
 				// Log the rental action
 				log.rentPayment(playerName, ownerName, field.getName(), price);
 				
-				break;
+				return new Pair<FIELD_STATUS, Object>(status, player.getMoney());
 			}
 			case CHEST_CARD:
 			case CHANCE_CARD: {
@@ -611,6 +615,8 @@ public class MonopolyGame {
 			}
 			default: throw new RuntimeException("Unhandled status case: " + status);
 		}
+		// TODO: remove this after switch is done
+		return null;
 	}
 	
 	/**

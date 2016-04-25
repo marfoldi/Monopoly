@@ -3,9 +3,11 @@ package hu.elte.game.logic.parsers;
 import java.util.ArrayList;
 import java.util.List;
 
+import hu.elte.game.logic.data.CardField;
 import hu.elte.game.logic.data.Field;
 import hu.elte.game.logic.data.LandField;
 import hu.elte.game.logic.data.PurchasableField;
+import hu.elte.game.logic.data.TaxField;
 import hu.elte.game.logic.interfaces.IField;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -40,7 +42,15 @@ public class FieldParser {
 		
 		if ("Field".equals(type)) {
 			return new Field(name);
-		} else {
+		} else if ("TaxField".equals(type)) {
+			int price = field.getInt("price");
+			return new TaxField(name, price);
+		} else if ("CardField".equals(type)) {
+			String subType = field.getString("subType");
+			return new CardField(name, subType);
+		}
+		// After this point, the type must be Land or Purchasable -Field
+		else {
 			int price = field.getInt("price");
 			
 			if ("LandField".equals(type)) { 
@@ -54,14 +64,15 @@ public class FieldParser {
 	}
 
 	private static IField parsePurchasableFieldFromJSONObject(JSONObject field, String name, int price) {
+		String subType = field.getString("subType");
 		ArrayList<Integer> incomings = JSONParser.parseJSONArray(field.getJSONArray("incomings"));
 		
-		return new PurchasableField(name, field.getString("subType"), price, incomings);
+		return new PurchasableField(name, subType, price, incomings);
 	}
 
 	private static LandField parseLandFieldFromJSONObject(JSONObject field, String name, int price) {
-		String city = field.getString("subType");
 		int housePrice = field.getInt("housePrice");
+		String city = field.getString("city");
 		ArrayList<Integer> rentalFee = JSONParser.parseJSONArray(field.getJSONArray("rentalFee"));
 		
 		return new LandField(name, price, city, housePrice, rentalFee);

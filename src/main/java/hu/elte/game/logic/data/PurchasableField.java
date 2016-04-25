@@ -7,14 +7,16 @@ public class PurchasableField extends Field {
 	private int price;
 	private List<Integer> incomings;
 	private boolean mortgage;
-	private String subType;
+	
+	public PurchasableField(String fieldName, Integer price, List<Integer> incomings) {
+		this(fieldName, null, price, incomings);
+	}
 
-	public PurchasableField(String fieldName, String subType, Integer price2, List<Integer> incomings) {
+	public PurchasableField(String fieldName, String subType, Integer price, List<Integer> incomings) {
 		super(fieldName);
 		this.owner = null;
-		this.subType = subType;
 		this.mortgage = false;
-		this.price = price2;
+		this.price = price;
 		this.incomings = incomings;
 	}
 
@@ -36,10 +38,6 @@ public class PurchasableField extends Field {
 		
 		Field other = (Field) _other;
 		return super.equals(other);
-	}
-	
-	public String getSubType() {
-		return this.subType;
 	}
 
 	public void setOwner(Player owner) {
