@@ -56,11 +56,11 @@ public class FieldParser {
 	private static IField parsePurchasableFieldFromJSONObject(JSONObject field, String name, int price) {
 		ArrayList<Integer> incomings = JSONParser.parseJSONArray(field.getJSONArray("incomings"));
 		
-		return new PurchasableField(name, price, incomings);
+		return new PurchasableField(name, field.getString("subType"), price, incomings);
 	}
 
 	private static LandField parseLandFieldFromJSONObject(JSONObject field, String name, int price) {
-		String city = field.getString("city");
+		String city = field.getString("subType");
 		int housePrice = field.getInt("housePrice");
 		ArrayList<Integer> rentalFee = JSONParser.parseJSONArray(field.getJSONArray("rentalFee"));
 		

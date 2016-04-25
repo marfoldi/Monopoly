@@ -3,20 +3,18 @@ package hu.elte.game.logic.data;
 import java.util.List;
 
 public class LandField extends PurchasableField {
-	private String city;
 	private int houseCount;
 	private int housePrice;
 
-	public LandField(String fieldName, Integer price, String city2, Integer housePrice2, List<Integer> rentalFee) {
-		super(fieldName, price, rentalFee);
+	public LandField(String fieldName, Integer price, String city, Integer housePrice2, List<Integer> rentalFee) {
+		super(fieldName, city, price, rentalFee);
 		houseCount = 0;
-		this.city = city2;
 		this.housePrice = housePrice2;
 	}
 
 	@Override
 	public String toString() {
-		return "LandField [" + super.toString() + "city=" + city + ", houseCount=" + houseCount + ", housePrice="
+		return "LandField [" + super.toString() + "city=" + this.getSubType() + ", houseCount=" + houseCount + ", housePrice="
 				+ housePrice + "]";
 	}
 	
@@ -36,7 +34,7 @@ public class LandField extends PurchasableField {
 	}
 
 	public String getCity() {
-		return city;
+		return this.getSubType();
 	}
 
 	public int getHouseCount() {
