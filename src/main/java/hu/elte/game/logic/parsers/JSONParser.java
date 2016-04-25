@@ -16,7 +16,7 @@ public class JSONParser {
 	
 	@SuppressWarnings("unchecked")
 	public static <T> T parse(String fileName, Class<?> clazz) {
-		InputStream is = clazz.getResourceAsStream("../../../../resources/" + fileName);
+		InputStream is = clazz.getResourceAsStream("../../../../../resources/" + fileName);
         try {
         	String jsonTxt = IOUtils.toString(is);
         	Object json = JSONSerializer.toJSON( jsonTxt );

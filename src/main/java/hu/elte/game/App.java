@@ -2,12 +2,16 @@ package hu.elte.game;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import hu.elte.game.view.Field;
 import hu.elte.game.view.GameScreen;
+import hu.elte.game.view.MenuBar;
 import hu.elte.game.view.MonopolyTable;
+import hu.elte.game.view.Player;
 
 /**
  * Hello world!
@@ -15,14 +19,16 @@ import hu.elte.game.view.MonopolyTable;
  */
 public class App 
 {
-    public static void main( String[] args )
+    public static void main( String[] args ) throws IOException
     {
     	Controller gameController = new Controller();
+    	gameController.createGame(Arrays.asList("Jeno","Jozsi"));
     	GameScreen gameScreen = new GameScreen();
     	/* TODO: GOT A NULLPTR HERE:
     	 * gameScreen.add(new MonopolyTable(gameController.getTableAsUITable()), BorderLayout.CENTER);
     	 */
-    	gameScreen.add(new MonopolyTable(createDummyFields()), BorderLayout.CENTER);
+    	gameScreen.add(new MonopolyTable(createDummyFields()), BorderLayout.WEST);
+    	gameScreen.add(new MenuBar(),BorderLayout.EAST);
     	gameScreen.pack(); //Recalculate the frame size
     }
     

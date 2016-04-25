@@ -23,7 +23,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
+import javax.swing.SwingConstants;
+/**
+ * 
+ * @author Dago
+ *
+ */
 public class PlayerInfoNavigation extends JPanel{
 
 	private JButton leftArrow,rightArrow;
@@ -52,7 +57,7 @@ public class PlayerInfoNavigation extends JPanel{
 		navigationPanel=new JPanel(new GridLayout(1, 3));
 		leftArrow=createButton("./src/main/java/resources/img/leftRedArrow.png");
 		rightArrow=createButton("./src/main/java/resources/img/rightRedArrow.png");
-		player=new JLabel("Player");
+		player=new JLabel("Player", SwingConstants.CENTER);
 		player.setMinimumSize(new Dimension(100, 40));
 		player.setPreferredSize(new Dimension(100, 40));
 		player.setMaximumSize(new Dimension(100, 40));

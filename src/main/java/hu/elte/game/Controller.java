@@ -37,7 +37,7 @@ public class Controller {
 		ArrayList<Card> chanceCards = new ArrayList<Card>(CardParser.parseCards(jsonChanceCards));
 				
 		// Parser the chest-cards from JSON
-		JSONArray jsonChestCards = JSONParser.parse("commCards.json");
+		JSONArray jsonChestCards = JSONParser.parse("commChestCards.json");
 		ArrayList<Card> chestCards = new ArrayList<Card>(CardParser.parseCards(jsonChestCards));
 				
 		// Create the Players from their names
@@ -84,5 +84,9 @@ public class Controller {
 
 	private void startPlayerFlow() {
 		// TODO: Enable UI elements 
+	}
+	
+	public List<IField> getFields(){
+		return game.getTable();
 	}
 }

@@ -15,9 +15,10 @@ import javax.swing.JFrame;
 public class GameScreen extends JFrame {
 	public GameScreen() {
 		setTitle("Monpoly");
+//		setResizable(false);
 		setBackground(Color.decode("#c0e2ca"));
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(new BorderLayout(0,0));
+		setLayout(new BorderLayout(2,1));
 	}
 }

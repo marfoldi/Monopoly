@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import hu.elte.game.logic.data.Player;
@@ -50,8 +49,8 @@ public class MenuBar extends JPanel{
 		jButton.setFont(new Font("Serif", Font.PLAIN, 30));
 		jButton.setForeground(Color.WHITE);
 		jButton.setBackground(new Color(161, 8, 8));
-		jButton.setMinimumSize(new Dimension(20, 20));
-		jButton.setPreferredSize(new Dimension(20, 20));
-		jButton.setMaximumSize(new Dimension(20, 20));
+//		jButton.setMinimumSize(new Dimension(20, 20));
+//		jButton.setPreferredSize(new Dimension(20, 20));
+//		jButton.setMaximumSize(new Dimension(20, 20));
 	}
 }
