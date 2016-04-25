@@ -11,6 +11,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -19,7 +20,10 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import hu.elte.game.Controller;
+import hu.elte.game.view.centerpanel.ButtonSouthPanel;
 import hu.elte.game.view.centerpanel.CenterPanel;
+import hu.elte.game.view.centerpanel.NorthPlayersPanel;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -29,24 +33,32 @@ import net.miginfocom.swing.MigLayout;
 public class MonopolyTable extends JPanel {
 	private final Dimension FIELDSIZE = getPreferedFieldSize();
 	private List<Field> fields;
+	private Controller gameController;
 
 	/**
 	 * @param fields
+	 * @param gameController 
 	 */
-	public MonopolyTable(List<Field> fields) {
+	public MonopolyTable(List<Field> fields, Controller gameController) {
 		super();
+		this.gameController=gameController;
 		this.setFields(fields);
 
 		setLayout(new MigLayout("fill, gap 2 2"));
 		
 		try {
 			displayFields();
+			displayMenu();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		this.setVisible(true);
+	}
+
+	private void displayMenu() {
+		
 	}
 
 	/**
@@ -118,8 +130,8 @@ public class MonopolyTable extends JPanel {
 		ImageIcon image = new ImageIcon("/Monopoly_pack_logo.png");
 		JLabel label = new JLabel("", image, JLabel.CENTER);
 		centerPanel.add(label);
-		
-		centerPanel.add(new JButton("Estate manager"), BorderLayout.SOUTH);
+		centerPanel.add(new ButtonSouthPanel(), BorderLayout.SOUTH);
+		centerPanel.add(new NorthPlayersPanel(Arrays.asList("Jeno : 1400FT","Erzsi : 1400FT","Bözsi : 1400FT")), BorderLayout.NORTH);
 	}
 	
 	public Dimension getPreferedFieldSize() {

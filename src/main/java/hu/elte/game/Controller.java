@@ -1,5 +1,6 @@
 package hu.elte.game;
 
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -83,6 +84,17 @@ public class Controller {
 	}
 
 	private void startPlayerFlow() {
-		// TODO: Enable UI elements 
+		// TODO: Ez még dummy fields
+		
+	}
+
+	public List<Field> getFields() {
+		//Ez még dummy
+		int FIELDSSIZE = 40;
+    	List<Field> fields = new ArrayList<>();
+    	for(int i=0; i<FIELDSSIZE; ++i) {
+    		fields.add(new Field("Field" + i+1, null, new Dimension())); //It's empty atm...
+    	}
+    	return fields;
 	}
 }
