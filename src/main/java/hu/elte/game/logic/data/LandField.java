@@ -5,16 +5,18 @@ import java.util.List;
 public class LandField extends PurchasableField {
 	private int houseCount;
 	private int housePrice;
+	private String city;
 
 	public LandField(String fieldName, Integer price, String city, Integer housePrice2, List<Integer> rentalFee) {
-		super(fieldName, city, price, rentalFee);
-		houseCount = 0;
+		super(fieldName, price, rentalFee);
+		this.houseCount = 0;
 		this.housePrice = housePrice2;
+		this.city = city;
 	}
 
 	@Override
 	public String toString() {
-		return "LandField [" + super.toString() + "city=" + this.getSubType() + ", houseCount=" + houseCount + ", housePrice="
+		return "LandField [" + super.toString() + "city=" + this.city + ", houseCount=" + houseCount + ", housePrice="
 				+ housePrice + "]";
 	}
 	
@@ -34,7 +36,7 @@ public class LandField extends PurchasableField {
 	}
 
 	public String getCity() {
-		return this.getSubType();
+		return this.city;
 	}
 
 	public int getHouseCount() {
