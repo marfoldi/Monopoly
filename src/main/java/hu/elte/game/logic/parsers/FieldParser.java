@@ -3,9 +3,11 @@ package hu.elte.game.logic.parsers;
 import java.util.ArrayList;
 import java.util.List;
 
+import hu.elte.game.logic.data.CardField;
 import hu.elte.game.logic.data.Field;
 import hu.elte.game.logic.data.LandField;
 import hu.elte.game.logic.data.PurchasableField;
+import hu.elte.game.logic.data.TaxField;
 import hu.elte.game.logic.interfaces.IField;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -42,10 +44,10 @@ public class FieldParser {
 			return new Field(name);
 		} else if ("TaxField".equals(type)) {
 			int price = field.getInt("price");
-			//return new TaxField(name, price);
+			return new TaxField(name, price);
 		} else if ("CardField".equals(type)) {
 			String subType = field.getString("subType");
-			// TODO: return new CardField(name, subType);
+			return new CardField(name, subType);
 		}
 		// After this point, the type must be Land or Purchasable -Field
 		else {
