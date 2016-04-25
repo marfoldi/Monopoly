@@ -3,7 +3,7 @@
     { "type": "LandField", "name": "Piac tér", "price": 6000, "subType": "Székesfehérvár", "housePrice": 5000, "rentalFee": [200, 1000, 3000, 9000, 16000, 25000] },
     { "type": "CardField", "subType": "chest", "name": "Meglepetéskártya" },
     { "type": "LandField", "name": "Török udvar", "price": 6000, "subType": "Székesfehérvár", "housePrice": 5000, "rentalFee": [400, 2000, 6000, 18000, 32000, 45000] },
-    { "type": "Field", "name": "Jövedelemadó" },
+    { "type": "TaxField", "name": "Jövedelemadó", "price": 2000 },
     { "type": "PurchasableField", "subType": "Vasut", "name": "Északi vasútvonal", "price": 20000, "incomings": [2500, 5000, 10000, 20000] },
     { "type": "LandField", "name": "Nagykőrösi út", "price": 10000, "subType": "Kecskemét", "housePrice": 5000, "rentalFee": [600, 3000, 9000, 27000, 40000, 55000] },
     { "type": "CardField", "subType": "chance", "name": "Szerencsekártya" },
@@ -40,6 +40,6 @@
     { "type": "PurchasableField", "subType": "Vasut", "name": "Nyugati vasútvonal", "price": 20000, "incomings": [2500, 5000, 10000, 20000] },
     { "type": "CardField", "subType": "chance", "name": "Szerencsekártya" },
     { "type": "LandField", "name": "Vörösmarty tér", "price": 35000, "subType": "Budapest", "housePrice": 20000, "rentalFee": [3500, 17500, 50000, 110000, 130000, 150000] },
-    { "type": "Field", "name": "Pótadó" },
+    { "type": "TaxField", "name": "Pótadó", "price": 1500 },
     { "type": "LandField", "name": "Dunakorzó", "price": 40000, "subType": "Budapest", "housePrice": 20000, "rentalFee": [5000, 20000, 60000, 140000, 170000, 200000] }
 ]
