@@ -3,6 +3,7 @@
  */
 package hu.elte.game.view;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -23,6 +26,10 @@ public class Field extends JPanel {
 	protected Image img;
 	protected List<Player> players;
 	protected Dimension size;
+	protected Color city;
+	protected String price;
+	protected JLabel owner;
+	
 	
 	/**
 	 * Constructor for the Start field
@@ -40,18 +47,84 @@ public class Field extends JPanel {
 		setBorder(BorderFactory.createEtchedBorder());
 	}
 	
-	@Override 
-	protected void paintComponent(Graphics g)
-	{
-	   super.paintComponent(g);
-	   setBackground(Color.decode("#c0e2ca"));
-	   if(img != null) {
-		   Graphics2D g2d = (Graphics2D) g;
-		    int x = (this.getWidth() - img.getWidth(null)) / 2;
-		    int y = (this.getHeight() - img.getHeight(null)) / 2;
-		    g2d.drawImage(img, x, y, null);
-	   }
+	/**
+	 * Constructor for the Controller
+	 * @param name
+	 * @param img
+	 * @param players
+	 */
+	public Field(String name, Image img, Color city, String price) {
+		super();
+		this.name = name;
+		this.img = img;
+		this.players = new ArrayList<>();
+		this.size = new Dimension();
+		this.city = city;
+		this.price = price;
+		displayData();
+		setBorder(BorderFactory.createEtchedBorder());
 	}
+	
+	private void displayData() {
+		JLabel tempLabel=new JLabel();
+		//Landfield
+		if(img==null&&name!=null&&city!=null&&price!=null){
+			setLayout(new BorderLayout(1,4));
+			add(owner=new JLabel());
+			tempLabel.setBackground(city);
+			add(tempLabel);
+			tempLabel=new JLabel(name);
+			add(tempLabel);
+			tempLabel=new JLabel(price);
+			add(tempLabel);
+		}
+		//purchasable
+		if(img!=null&&name!=null&&city==null&&price!=null){
+			setLayout(new BorderLayout(1,4));
+			add(owner=new JLabel());
+			tempLabel=new JLabel(name);
+			add(tempLabel);
+			tempLabel=new JLabel(new ImageIcon(img));
+			add(tempLabel);
+			tempLabel=new JLabel(price);
+			add(tempLabel);
+		}
+		//taxfield
+		if(img==null&&name!=null&&city==null&&price!=null){
+			setLayout(new BorderLayout(1,2));
+			tempLabel=new JLabel(name);
+			add(tempLabel);
+			tempLabel=new JLabel(price);
+			add(tempLabel);
+		}
+		//card
+		if(img!=null&&name!=null&&city==null&&price==null){
+			setLayout(new BorderLayout(1,2));
+			tempLabel=new JLabel(name);
+			add(tempLabel);
+			tempLabel=new JLabel(new ImageIcon(img));
+			add(tempLabel);
+		}
+		//sima field
+		if(img==null&&name!=null&&city==null&&price==null){
+			setLayout(new BorderLayout(1,1));
+			tempLabel=new JLabel(name);
+			add(tempLabel);
+		}
+	}
+
+//	@Override 
+//	protected void paintComponent(Graphics g)
+//	{
+//	   super.paintComponent(g);
+//	   setBackground(Color.decode("#c0e2ca"));
+//	   if(img != null) {
+//		   Graphics2D g2d = (Graphics2D) g;
+//		    int x = (this.getWidth() - img.getWidth(null)) / 2;
+//		    int y = (this.getHeight() - img.getHeight(null)) / 2;
+//		    g2d.drawImage(img, x, y, null);
+//	   }
+//	}
 	
 	/**
 	 * Constructor for the fields except the Start

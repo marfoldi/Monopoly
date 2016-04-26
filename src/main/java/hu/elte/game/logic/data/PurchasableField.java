@@ -7,6 +7,7 @@ public class PurchasableField extends Field {
 	private int price;
 	private List<Integer> incomings;
 	private boolean mortgage;
+	private String subType;
 	
 	public PurchasableField(String fieldName, Integer price, List<Integer> incomings) {
 		this(fieldName, null, price, incomings);
@@ -63,5 +64,19 @@ public class PurchasableField extends Field {
 	public List<Integer> getIncomings() {
 		return incomings;
 	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+	public String getSubType() {
+		return subType;
+	}
+
+	public void setSubType(String subType) {
+		this.subType = subType;
+	}
+	
+	
 
 }

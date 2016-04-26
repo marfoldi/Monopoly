@@ -12,7 +12,7 @@
 
     { "type": "Field", "name": "Börtön" },
     { "type": "LandField", "name": "Egyetem utca", "price": 14000, "city": "Pécs", "housePrice": 10000, "rentalFee": [1000, 5000, 15000, 45000, 62500, 75000] },
-    { "type": "PurchasableField", "subType": "Eromu", "name": "Elektromos művek", "price": 15000, "rentalFee": [400, 1000] },
+    { "type": "PurchasableField", "subType": "Eromu", "name": "Elektromos művek", "price": 15000, "incomings": [400, 1000] },
     { "type": "LandField", "name": "Színház tér", "price": 14000, "city": "Pécs", "housePrice": 10000, "rentalFee": [1000, 5000, 15000, 45000, 62500, 75000] },
     { "type": "LandField", "name": "Janus Pannonius út", "price": 16000, "city": "Pécs", "housePrice": 10000, "rentalFee": [1200, 6000, 18000, 50000, 70000, 90000] },
     { "type": "PurchasableField", "subType": "Vasut", "name": "Keleti vasútvonal", "price": 20000, "incomings": [2500, 5000, 10000, 20000] },
@@ -29,7 +29,7 @@
     { "type": "PurchasableField", "subType": "Vasut", "name": "Déli vasútvonal", "price": 20000, "incomings": [2500, 5000, 10000, 20000] },
     { "type": "LandField", "name": "Dobó tér", "price": 26000, "city": "Eger", "housePrice": 15000, "rentalFee": [2200, 11000, 33000, 80000, 97500, 115000] },
     { "type": "LandField", "name": "Almagyar utca", "price": 26000, "city": "Eger", "housePrice": 15000, "rentalFee": [2200, 11000, 33000, 80000, 97500, 115000] },
-    { "type": "PurchasableField", "subType": "Eromu", "name": "Vízmű", "price": 15000, "rentalFee": [400, 1000] },
+    { "type": "PurchasableField", "subType": "Eromu", "name": "Vízmű", "price": 15000, "incomings": [400, 1000] },
     { "type": "LandField", "name": "Gárdonyi út", "price": 28000, "city": "Eger", "housePrice": 15000, "rentalFee": [2400, 12000, 36000, 85000, 102500, 120000] },
 
     { "type": "Field", "name": "Irány a börtön!" },

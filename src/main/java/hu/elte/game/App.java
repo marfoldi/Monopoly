@@ -2,6 +2,7 @@ package hu.elte.game;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,11 +17,11 @@ import hu.elte.game.view.MonopolyTable;
  */
 public class App 
 {
-    public static void main( String[] args )
+    public static void main( String[] args ) throws IOException
     {
     	List<String> players=Arrays.asList("Jozsi","Erzsi","Pista","Joska");
     	Controller gameController = new Controller();
-//    	gameController.createGame(players);
+   	gameController.createGame(players);
     	GameScreen gameScreen = new GameScreen();
     	/* TODO: GOT A NULLPTR HERE:
     	 * gameScreen.add(new MonopolyTable(gameController.getTableAsUITable()), BorderLayout.CENTER);

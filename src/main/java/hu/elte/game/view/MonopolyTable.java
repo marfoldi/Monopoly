@@ -38,8 +38,9 @@ public class MonopolyTable extends JPanel {
 	/**
 	 * @param fields
 	 * @param gameController 
+	 * @throws IOException 
 	 */
-	public MonopolyTable(Controller gameController) {
+	public MonopolyTable(Controller gameController) throws IOException {
 		super();
 		this.gameController=gameController;
 		this.setFields(gameController.getFields());
@@ -80,21 +81,24 @@ public class MonopolyTable extends JPanel {
 	 * @throws IOException 
 	 */
 	private void displayFields() throws IOException {
+		for(Field field:fields)
+			field.setSize(new Dimension(FIELDSIZE.height, FIELDSIZE.height));
+		
 		// top row
-        add(new Field("Start", null, new Dimension(FIELDSIZE.height, FIELDSIZE.height)));
-        displayHorizontalFields(fields.size()/4+2);
-        add(new Field("Jail", null, new Dimension(FIELDSIZE.height, FIELDSIZE.height)), "wrap");
+        add(fields.get(0));
+        displayHorizontalFields(1,12);
+        add(fields.get(13), "wrap");
 
         // left column
-        displayVerticalFields(fields.size()/4-4, "wrap");
-        add(new Field("Parking", null, new Dimension(FIELDSIZE.height, FIELDSIZE.height)));
+        displayVerticalFields(14,19, "wrap");
+        add(fields.get(20));
 
         // bottom row
-        displayHorizontalFields(fields.size()/4+2);
-        add(new Field("GOTO", null, new Dimension(FIELDSIZE.height, FIELDSIZE.height)));
+        displayHorizontalFields(21,32);
+        add(fields.get(33));
 
         // right column
-        displayVerticalFields(fields.size()/4-4, "cell");
+        displayVerticalFields(34,39, "cell");
 
         // center picture
         CenterPanel centerPanel = new CenterPanel(ImageIO.read(new File("./src/main/java/resources/img/Monopoly_pack_logo.png")), new Dimension(FIELDSIZE.height, FIELDSIZE.height));
@@ -102,19 +106,19 @@ public class MonopolyTable extends JPanel {
         add(centerPanel, "cell 1 1 " + (fields.size()/4+2) + " " + (fields.size()/4-4) +", grow");
 	}
 	   
-	private void displayHorizontalFields(int size) {
-		for(int i=0; i<size; ++i) {
-			add(new Field("Field", null, new Dimension(FIELDSIZE.width, FIELDSIZE.height)));
+	private void displayHorizontalFields(int start,int end) {
+		for(int i=start; i<=end; ++i) {
+			add(fields.get(i));
 		}
 	}
 	   
-	private void displayVerticalFields(int size, String id) {
-		for(int i=0; i<size; ++i) {
+	private void displayVerticalFields(int start,int end, String id) {
+		for(int i=start; i<=end; ++i) {
 			if(id.equals("wrap")) { // It's the left column
-				add(new Field("Field", null, new Dimension(FIELDSIZE.height, FIELDSIZE.width)), id);
+				add(fields.get(i), id);
 			}
 			else {
-				add(new Field("Field", null, new Dimension(FIELDSIZE.height, FIELDSIZE.width)), "cell " + (size+7) + " " + (i+1));
+				add(fields.get(i), "cell " + (end-start+8) + " " + (i-start+1));
 			}
 		}
 	}
