@@ -113,18 +113,18 @@ public class Field extends JPanel {
 		}
 	}
 
-//	@Override 
-//	protected void paintComponent(Graphics g)
-//	{
-//	   super.paintComponent(g);
-//	   setBackground(Color.decode("#c0e2ca"));
-//	   if(img != null) {
-//		   Graphics2D g2d = (Graphics2D) g;
-//		    int x = (this.getWidth() - img.getWidth(null)) / 2;
-//		    int y = (this.getHeight() - img.getHeight(null)) / 2;
-//		    g2d.drawImage(img, x, y, null);
-//	   }
-//	}
+	@Override 
+	protected void paintComponent(Graphics g)
+	{
+	   super.paintComponent(g);
+	   setBackground(Color.decode("#c0e2ca"));
+	   if(img != null) {
+		   Graphics2D g2d = (Graphics2D) g;
+		    int x = (this.getWidth() - img.getWidth(null)) / 2;
+		    int y = (this.getHeight() - img.getHeight(null)) / 2;
+		    g2d.drawImage(img, x, y, null);
+	   }
+	}
 	
 	/**
 	 * Constructor for the fields except the Start
