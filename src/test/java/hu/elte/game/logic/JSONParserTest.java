@@ -57,7 +57,7 @@ public class JSONParserTest {
 	@Test
 	public void testCorrect() {
 		try {
-			Object result = JSONParser.parse(this.fileName, JSONParserTest.class);
+			Object result = JSONParser.parse(this.fileName, JSONParserTest.class, "../../../../resources/");
 			assertTrue(result.equals(this.json));
 		} catch (Exception e) {
 			fail(e.getMessage());

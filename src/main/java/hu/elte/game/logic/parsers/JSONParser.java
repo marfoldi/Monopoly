@@ -10,13 +10,19 @@ import net.sf.json.JSONSerializer;
 
 public class JSONParser {
 	
+	private static final String defaultPath = "../../../../../resources/";
+	
 	public static <T> T parse(String fileName) {
 		return parse(fileName, JSONParser.class);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static <T> T parse(String fileName, Class<?> clazz) {
-		InputStream is = clazz.getResourceAsStream("../../../../resources/" + fileName);
+		return parse(fileName, clazz, null);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T parse(String fileName, Class<?> clazz, String path) {
+		InputStream is = clazz.getResourceAsStream((path == null ? defaultPath : path) + fileName);
         try {
         	String jsonTxt = IOUtils.toString(is);
         	Object json = JSONSerializer.toJSON( jsonTxt );
