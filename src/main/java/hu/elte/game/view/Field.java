@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,9 +70,10 @@ public class Field extends JPanel {
 		JLabel tempLabel=new JLabel();
 		//Landfield
 		if(img==null&&name!=null&&city!=null&&price!=null){
-			setLayout(new BorderLayout(1,4));
+			setLayout(new GridLayout(4,1));
 			add(owner=new JLabel());
 			tempLabel.setBackground(city);
+			tempLabel.setOpaque(true);
 			add(tempLabel);
 			tempLabel=new JLabel(name);
 			add(tempLabel);
@@ -80,7 +82,7 @@ public class Field extends JPanel {
 		}
 		//purchasable
 		if(img!=null&&name!=null&&city==null&&price!=null){
-			setLayout(new BorderLayout(1,4));
+			setLayout(new GridLayout(4,1));
 			add(owner=new JLabel());
 			tempLabel=new JLabel(name);
 			add(tempLabel);
@@ -91,7 +93,7 @@ public class Field extends JPanel {
 		}
 		//taxfield
 		if(img==null&&name!=null&&city==null&&price!=null){
-			setLayout(new BorderLayout(1,2));
+			setLayout(new GridLayout(2,1));
 			tempLabel=new JLabel(name);
 			add(tempLabel);
 			tempLabel=new JLabel(price);
@@ -99,7 +101,7 @@ public class Field extends JPanel {
 		}
 		//card
 		if(img!=null&&name!=null&&city==null&&price==null){
-			setLayout(new BorderLayout(1,2));
+			setLayout(new GridLayout(2,1));
 			tempLabel=new JLabel(name);
 			add(tempLabel);
 			tempLabel=new JLabel(new ImageIcon(img));
@@ -107,24 +109,24 @@ public class Field extends JPanel {
 		}
 		//sima field
 		if(img==null&&name!=null&&city==null&&price==null){
-			setLayout(new BorderLayout(1,1));
+			setLayout(new GridLayout(1,1));
 			tempLabel=new JLabel(name);
 			add(tempLabel);
 		}
 	}
 
-	@Override 
-	protected void paintComponent(Graphics g)
-	{
-	   super.paintComponent(g);
-	   setBackground(Color.decode("#c0e2ca"));
-	   if(img != null) {
-		   Graphics2D g2d = (Graphics2D) g;
-		    int x = (this.getWidth() - img.getWidth(null)) / 2;
-		    int y = (this.getHeight() - img.getHeight(null)) / 2;
-		    g2d.drawImage(img, x, y, null);
-	   }
-	}
+//	@Override 
+//	protected void paintComponent(Graphics g)
+//	{
+//	   super.paintComponent(g);
+//	   setBackground(Color.decode("#c0e2ca"));
+//	   if(img != null) {
+//		   Graphics2D g2d = (Graphics2D) g;
+//		    int x = (this.getWidth() - img.getWidth(null)) / 2;
+//		    int y = (this.getHeight() - img.getHeight(null)) / 2;
+//		    g2d.drawImage(img, x, y, null);
+//	   }
+//	}
 	
 	/**
 	 * Constructor for the fields except the Start
