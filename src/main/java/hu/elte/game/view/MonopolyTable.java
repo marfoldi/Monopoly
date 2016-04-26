@@ -16,7 +16,6 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -82,7 +81,7 @@ public class MonopolyTable extends JPanel {
 	 */
 	private void displayFields() throws IOException {
 		for(Field field:fields)
-			field.setSize(new Dimension(FIELDSIZE.height, FIELDSIZE.height));
+			field.setSize(new Dimension(FIELDSIZE.height, FIELDSIZE.width));
 		
 		// top row
         add(fields.get(0));

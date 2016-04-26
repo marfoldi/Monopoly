@@ -36,13 +36,13 @@ public class EstateManager extends JFrame {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
                 }
-                JFrame frame = new JFrame("Ingatlan menedzser");
-                frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-                frame.setLayout(new BorderLayout());
-                frame.add(pane);
-                frame.add(new JButton("Ok"), BorderLayout.SOUTH);
-                frame.pack();
-                frame.setVisible(true);
+                setTitle("Ingatlan menedzser");
+                setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                setLayout(new BorderLayout());
+                add(pane);
+                add(new JButton("Ok"), BorderLayout.SOUTH);
+                pack();
+                setVisible(true);
             }
         });
     }
