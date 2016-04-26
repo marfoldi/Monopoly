@@ -199,5 +199,9 @@ public class Field extends JPanel {
     @Override
     public Dimension getMinimumSize() {
         return getPreferredSize();
-    }        
+    }
+    
+    public void setSize(Dimension size) {
+    	this.size = size;
+    }
 }
