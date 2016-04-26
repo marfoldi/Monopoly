@@ -12,11 +12,13 @@ import org.javatuples.Pair;
 import hu.elte.game.logic.ChangeSet.ACTION;
 import hu.elte.game.logic.ChangeSet.ACTOR;
 import hu.elte.game.logic.data.Card;
+import hu.elte.game.logic.data.CardField;
 import hu.elte.game.logic.data.Dice;
 import hu.elte.game.logic.data.Field;
 import hu.elte.game.logic.data.LandField;
 import hu.elte.game.logic.data.Player;
 import hu.elte.game.logic.data.PurchasableField;
+import hu.elte.game.logic.data.TaxField;
 import hu.elte.game.logic.exceptions.GameRuleException;
 import hu.elte.game.logic.exceptions.InvalidFieldException;
 import hu.elte.game.logic.exceptions.GameRuleException.CODE;
@@ -47,6 +49,7 @@ public class MonopolyGame {
 	 *  - PLAYER_OWNED : the field belong to another Player, the current Player has to pay rent
 	 *  - BANK_OWNED   : the field does not belong to anybody, the current Player can buy it
 	 *  - NEUTRAL      : this is a neutral field, no action takes place
+	 *  - TAX_FIELD    : this is a field where the player must pay tax
 	 *  - CHANCE_CARD  : the Player gets a chance card, and the properties on it
 	 *  - CHEST_CARD   : the Player gets a chest card, and the properties on it
 	 *  - JAIL         : this field is not going to be in the game...
@@ -54,7 +57,7 @@ public class MonopolyGame {
 	 *
 	 */
 	public enum FIELD_STATUS {
-		SELF_OWNED, PLAYER_OWNED, BANK_OWNED, NEUTRAL, CHANCE_CARD, CHEST_CARD, JAIL
+		SELF_OWNED, PLAYER_OWNED, BANK_OWNED, NEUTRAL, CHANCE_CARD, CHEST_CARD, JAIL, TAX_FIELD
 	}
 	
 	public MonopolyGame(ArrayList<IField> table, ArrayList<Player> players, ArrayList<Card> chanceCards, ArrayList<Card> chestCards, IFlowController flowController) {
@@ -118,14 +121,13 @@ public class MonopolyGame {
 		Class<?> clazz = field.getClass();
 		
 		// Check the type of the IField
-		
-		// TODO: how to determine if it is a chance-chest card or a neutral field?
 		if (clazz.equals(Field.class)) {
-			
 			return FIELD_STATUS.NEUTRAL;
-			// return FIELD_STATUS.CHANCE_CARD;
-			// return FIELD_STATUS.CHEST_CARD;
-			
+		} else if (clazz.equals(CardField.class)) {
+			CardField cardField = (CardField) field;
+			return ("chance".equals(cardField.getSubType())) ? FIELD_STATUS.CHANCE_CARD : FIELD_STATUS.CHEST_CARD;
+		} else if (clazz.equals(TaxField.class)) {
+			return FIELD_STATUS.TAX_FIELD;
 		}
 		// If it's not a plain Field, it must be an instance of PurchasableField
 		else if (field instanceof PurchasableField) {
@@ -137,7 +139,7 @@ public class MonopolyGame {
 				return owner.getName().equals(playerName) ? FIELD_STATUS.SELF_OWNED : FIELD_STATUS.PLAYER_OWNED;
 			}
 		} else {
-			throw new InternalError();
+			throw new RuntimeException("Undhandled field type in getStatus: " + clazz);
 		}
 	}
 	
