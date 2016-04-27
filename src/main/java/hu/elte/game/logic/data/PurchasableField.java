@@ -19,6 +19,7 @@ public class PurchasableField extends Field {
 		this.mortgage = false;
 		this.price = price;
 		this.incomings = incomings;
+		this.subType = subType;
 	}
 
 	@Override
@@ -65,18 +66,8 @@ public class PurchasableField extends Field {
 		return incomings;
 	}
 
-	public void setPrice(int price) {
-		this.price = price;
-	}
-
 	public String getSubType() {
 		return subType;
 	}
-
-	public void setSubType(String subType) {
-		this.subType = subType;
-	}
-	
-	
 
 }
