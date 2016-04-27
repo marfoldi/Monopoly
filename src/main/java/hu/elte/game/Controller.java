@@ -127,7 +127,7 @@ public class Controller {
 		for (int i = 0; i < FIELDSSIZE; ++i) {
 			if (logicFields.get(i).getClass() == PurchasableField.class) {
 				PurchasableField purchasableField = (PurchasableField) logicFields.get(i);
-				if(purchasableField.getSubType() == "Eromu"){
+				if(purchasableField.getSubType().equals("Eromu")){
 					fields.add(new Field(purchasableField.getName(), powerPlant, null,
 							purchasableField.getPrice() + " Ft"));
 				}else{
@@ -144,7 +144,7 @@ public class Controller {
 				fields.add(new Field(landField.getName(),  null, cities.get(landField.getCity()), landField.getPrice() + " Ft"));
 			}else if(logicFields.get(i).getClass() == CardField.class){
 				CardField cardField = (CardField) logicFields.get(i);
-				if(cardField.getSubType() == "chance"){
+				if(cardField.getSubType().equals("chance")) {
 					fields.add(new Field(cardField.getName(), question, null, ""));
 				}else{
 					fields.add(new Field(cardField.getName(), chest, null, ""));
