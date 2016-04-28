@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Stack;
 import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
@@ -110,17 +111,7 @@ public class Controller {
 	 * @return the list of fields in UI format
 	 * @throws IOException
 	 */
-	public List<Field> getFields() throws IOException {
-		HashMap<String, Color> cities = new HashMap<>();
-		cities.put("Eger", Color.blue);
-		cities.put("Székesfehérvár", Color.green);
-		cities.put("Kecskemét", Color.red);
-		cities.put("Pécs", Color.orange);
-		cities.put("Debrecen", Color.pink);
-		cities.put("Szeged", Color.yellow);
-		cities.put("Sopron", Color.cyan);
-		cities.put("Budapest", Color.magenta);
-		
+	public List<Field> getFields() throws IOException {		
 		Image train = ImageIO.read(new File("./src/main/java/resources/img/transport.png"));
 		Image powerPlant = ImageIO.read(new File("./src/main/java/resources/img/buildings.png"));
 		Image question = ImageIO.read(new File("./src/main/java/resources/img/signs.png"));
@@ -148,7 +139,7 @@ public class Controller {
 			} else if (clazz.equals(LandField.class)) {
 				
 				LandField lField = (LandField) field;
-				fields.add(new Field(name, null, cities.get(lField.getCity()), lField.getPrice() + " Ft"));
+				fields.add(new Field(name, null, ColorPicker.pickColor(lField.getCity()), lField.getPrice() + " Ft"));
 				
 			} else if (clazz.equals(CardField.class)) {
 				
@@ -166,5 +157,51 @@ public class Controller {
 		}
 		
 		return fields;
+	}
+	
+	/**
+	 * Gets an unique color for given name, based on equality
+	 * @author I321357
+	 *
+	 */
+	private static class ColorPicker {
+		
+		private static HashMap<String, Color> associations = new HashMap<String, Color>();
+		private static Stack<Color> colors = new Stack<Color>();
+		
+		static {
+			colors.push(Color.blue);
+			colors.push(Color.green);
+			colors.push(Color.red);
+			colors.push(Color.orange);
+			colors.push(Color.pink);
+			colors.push(Color.yellow);
+			colors.push(Color.cyan);
+			colors.push(Color.magenta);
+		}
+		
+		/**
+		 * Gets an unique color for the given name.
+		 * Same names get the same color
+		 * @param name
+		 * @return the unique color for the given name
+		 * @throws IllegalStateException
+		 *  - if there are no more colors to choose from
+		 */
+		public static Color pickColor(String name) {
+			
+			if (associations.containsKey(name)) {
+				return associations.get(name);
+			}
+			
+			if (colors.isEmpty()) {
+				throw new IllegalStateException("Out of colors");
+			}
+			
+			Color color = colors.pop();
+			associations.put(name, color);
+			
+			return color;
+		}
 	}
 }
