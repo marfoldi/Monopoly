@@ -104,7 +104,12 @@ public class Controller {
 		// TODO: Ez még dummy fields
 
 	}
-
+	
+	/**
+	 * Gets the fields from the model, converting them to UI format 
+	 * @return the list of fields in UI format
+	 * @throws IOException
+	 */
 	public List<Field> getFields() throws IOException {
 		HashMap<String, Color> cities = new HashMap<>();
 		cities.put("Eger", Color.blue);
@@ -116,44 +121,50 @@ public class Controller {
 		cities.put("Sopron", Color.cyan);
 		cities.put("Budapest", Color.magenta);
 		
-		Image train =ImageIO.read(new File("./src/main/java/resources/img/transport.png"));
+		Image train = ImageIO.read(new File("./src/main/java/resources/img/transport.png"));
 		Image powerPlant = ImageIO.read(new File("./src/main/java/resources/img/buildings.png"));
 		Image question = ImageIO.read(new File("./src/main/java/resources/img/signs.png"));
 		Image chest = ImageIO.read(new File("./src/main/java/resources/img/tool.png"));
-		// public Field(String name, Image img, Color city, String price)
-		ArrayList<IField> logicFields = game.getTable();
-		int FIELDSSIZE = 40;
+		
+		// Get the fields from the model
+		List<IField> logicFields = this.game.getTable();
 		List<Field> fields = new ArrayList<>();
-		for (int i = 0; i < FIELDSSIZE; ++i) {
-			if (logicFields.get(i).getClass() == PurchasableField.class) {
-				PurchasableField purchasableField = (PurchasableField) logicFields.get(i);
-				if(purchasableField.getSubType().equals("Eromu")){
-					fields.add(new Field(purchasableField.getName(), powerPlant, null,
-							purchasableField.getPrice() + " Ft"));
-				}else{
-					fields.add(new Field(purchasableField.getName(), train, null,
-							purchasableField.getPrice() + " Ft"));
-				}
+		
+		for (IField field : logicFields) {
+			Class<?> clazz = field.getClass();
+			String name = field.getName();
+			
+			if (clazz.equals(PurchasableField.class)) {
+
+				PurchasableField pField = (PurchasableField) field;
+				Image pImage = pField.getSubType().equals("Eromu") ? powerPlant : train;
+				fields.add(new Field(name, pImage, null, pField.getPrice() + " Ft"));
 				
-			}else if(logicFields.get(i).getClass() == TaxField.class){
-				TaxField taxField = (TaxField) logicFields.get(i);
-				fields.add(new Field(taxField.getName(), null, null,
-						taxField.getPrice() + " Ft"));
-			}else if(logicFields.get(i).getClass() == LandField.class){
-				LandField landField = (LandField) logicFields.get(i);
-				fields.add(new Field(landField.getName(),  null, cities.get(landField.getCity()), landField.getPrice() + " Ft"));
-			}else if(logicFields.get(i).getClass() == CardField.class){
-				CardField cardField = (CardField) logicFields.get(i);
-				if(cardField.getSubType().equals("chance")) {
-					fields.add(new Field(cardField.getName(), question, null, ""));
-				}else{
-					fields.add(new Field(cardField.getName(), chest, null, ""));
-				}
-			}else{
-				hu.elte.game.logic.data.Field field = (hu.elte.game.logic.data.Field) logicFields.get(i);
-				fields.add(new Field(field.getName(), null, null, ""));
+			} else if (clazz.equals(TaxField.class)) {
+				
+				TaxField tField = (TaxField) field;
+				fields.add(new Field(name, null, null, tField.getPrice() + " Ft"));
+				
+			} else if (clazz.equals(LandField.class)) {
+				
+				LandField lField = (LandField) field;
+				fields.add(new Field(name, null, cities.get(lField.getCity()), lField.getPrice() + " Ft"));
+				
+			} else if (clazz.equals(CardField.class)) {
+				
+				CardField cField = (CardField) field;
+				Image cImage = cField.getSubType().equals("chance") ? question : chest;
+				fields.add(new Field(name, cImage, null, ""));
+
+			}
+			// It must be a neutral field
+			else {
+				
+				fields.add(new Field(name, null, null, ""));
+				
 			}
 		}
+		
 		return fields;
 	}
 }
