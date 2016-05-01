@@ -72,10 +72,11 @@ public class Field extends JPanel {
 		if(img==null&&name!=null&&city!=null&&price!=null){
 			setLayout(new GridLayout(4,1));
 			add(owner=new JLabel());
+			tempLabel=new JLabel(name);
+			add(tempLabel);
+			tempLabel=new JLabel();
 			tempLabel.setBackground(city);
 			tempLabel.setOpaque(true);
-			add(tempLabel);
-			tempLabel=new JLabel(name);
 			add(tempLabel);
 			tempLabel=new JLabel(price);
 			add(tempLabel);

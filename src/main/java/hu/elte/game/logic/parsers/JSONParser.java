@@ -1,6 +1,8 @@
 package hu.elte.game.logic.parsers;
 
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 
 import org.apache.commons.io.IOUtils;
@@ -24,7 +26,8 @@ public class JSONParser {
 	public static <T> T parse(String fileName, Class<?> clazz, String path) {
 		InputStream is = clazz.getResourceAsStream((path == null ? defaultPath : path) + fileName);
         try {
-        	String jsonTxt = IOUtils.toString(is);
+        	Reader reader = new InputStreamReader(is, "UTF-8");
+        	String jsonTxt = IOUtils.toString(reader);
         	Object json = JSONSerializer.toJSON( jsonTxt );
         	return (T) json;
         } catch (Exception e) {
