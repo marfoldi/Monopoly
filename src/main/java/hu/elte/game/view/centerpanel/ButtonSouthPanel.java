@@ -6,9 +6,6 @@ package hu.elte.game.view.centerpanel;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -38,28 +35,26 @@ public class ButtonSouthPanel extends JPanel{
 	
 	private void initButtons() {
 		JButton buttons[] = {new JButton("Elad"), new JButton("Vásárol"), new JButton("Zálogosít"), new JButton("Zálogból kivesz")};
-		List<AbstractTableModel> tableModels = new ArrayList<>();
-		tableModels.add(new SellTableModel());
-		tableModels.add(new BuyTableModel());
-		tableModels.add(new MortageTableModel());
-		tableModels.add(new UnMortageTableModel());
+		AbstractTableModel tableModels[] = {new SellTableModel(), new BuyTableModel(), new MortageTableModel(), new UnMortageTableModel()};
 		
-		for(JButton button : buttons) {
-			button.addActionListener(new ActionListener(){
-			    public void actionPerformed(ActionEvent e){
-			        SwingUtilities.invokeLater(new Runnable() {
-			        public void run() {
-			          new EstateManager(tableModels.get(0));
-			          tableModels.remove(0);
-			        }
-			        });
-
-			    }
-			 });
+		for(int i=0; i<buttons.length; ++i) {
+			addListenerToButton(buttons[i], tableModels[i]);
 		}
 		
 		for(int i=0; i<buttons.length; ++i) {
 			add(buttons[i], i);
 		}
+	}
+	
+	private void addListenerToButton(JButton button, AbstractTableModel tableModel) {
+		button.addActionListener(new ActionListener(){
+		    public void actionPerformed(ActionEvent e){
+		        SwingUtilities.invokeLater(new Runnable() {
+		        public void run() {
+		          new EstateManager(tableModel);
+		        }
+		        });
+		    }
+		 });
 	}
 }
