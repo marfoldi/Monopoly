@@ -570,7 +570,7 @@ public class MonopolyGame {
 			case BANK_OWNED:
 			case SELF_OWNED:
 			case NEUTRAL: {
-				break;
+				return new Pair<FIELD_STATUS, Object>(status, null);
 			}
 			case PLAYER_OWNED: {
 				PurchasableField field = (PurchasableField) newField;
@@ -596,9 +596,7 @@ public class MonopolyGame {
 							return false;
 						}
 						PurchasableField castedItem = (PurchasableField) item;
-						// FIX ME: missing getter: getSubType()
-						// return castedItem.getOwner().getName().equals(ownerName) && castedItem.getSubType().equals(purchasableField.getSubType());
-						return true;
+						return castedItem.getOwner().getName().equals(ownerName) && castedItem.getSubType().equals(purchasableField.getSubType());
 					}).count();
 					price = purchasableField.getIncomings().get(numberOfEstates - 1);
 				}
@@ -613,12 +611,18 @@ public class MonopolyGame {
 			}
 			case CHEST_CARD:
 			case CHANCE_CARD: {
-				break;
+				Card card;
+				if (status.equals(FIELD_STATUS.CHEST_CARD)) {
+					card = getChestCardForPlayer(playerName);
+				} else {
+					card = getChanceCardForPlayer(playerName);
+				}
+				
+				return new Pair<FIELD_STATUS, Object>(status, card);
 			}
 			default: throw new RuntimeException("Unhandled status case: " + status);
 		}
-		// TODO: remove this after switch is done
-		return null;
+		
 	}
 	
 	/**
