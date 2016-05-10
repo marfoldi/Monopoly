@@ -506,7 +506,7 @@ public class MonopolyGame {
 	 * Rolls the dice (2 dices)
 	 * @return
 	 */
-	public Dice rollDice(String playerName) {
+	public IDice rollDice(String playerName) {
 		
 		// Get the Player with the name 'playerName'
 		Player player = getPlayerForName(playerName);
@@ -514,10 +514,8 @@ public class MonopolyGame {
 			throw new IllegalArgumentException("Player not found: " + playerName);
 		}
 		
-		Random rand = new Random();
-		int first = rand.nextInt(6) + 1;
-		int second = rand.nextInt(6) + 1;
-		Dice dice = new Dice(first, second);
+		
+		IDice dice = new Dice();
 		
 		// Log the roll action
 		// Note: this also adds this to the change set
